@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/change_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="更换封面"
+        android:textSize="18sp"
+        android:clickable="true"/>
+    <View
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#9e9e9e" />
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="取消"
+        android:textSize="18sp"
+        android:clickable="true"/>
+
+
+</LinearLayout>

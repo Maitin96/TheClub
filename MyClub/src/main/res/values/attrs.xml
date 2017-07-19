@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--圆形图片-->
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_fill_color" format="color" />
+    </declare-styleable>
+    <declare-styleable name="IdentityImageView">
+        <attr name="iciv_bigimage" format="reference"/><!--大图片-->
+        <attr name="iciv_smallimage" format="reference"/><!--小图片-->
+        <attr name="iciv_angle" format="float"/><!--标识角度-->
+        <attr name="iciv_radiusscale" format="float"/><!--大小图片比例-->
+        <attr name="iciv_isprogress" format="boolean"/><!--是否有进度条-->
+        <attr name="iciv_progress_collor" format="color|reference"/><!--进度条颜色-->
+        <attr name="iciv_border_color" format="color|reference"/><!--边框颜色-->
+        <attr name="iciv_border_width" format="integer"/><!--边框宽度-->
+        <attr name="iciv_hint_smallimageview" format="boolean"/><!--是否隐藏小图片-->
+    </declare-styleable>
+    
+    <!--设置页面item-->
+    <declare-styleable name="SettingItem">
+        <attr name="left_image" format="color|reference|integer"/>
+        <attr name="text" format="string"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="textColor" format="color"/>
+        <attr name="math" format="integer"/>
+        <attr name="arrow" format="reference"/>
+    </declare-styleable>
+
+    <!--侧边首字母导航-->
+    <declare-styleable name="SideBar">
+        <attr name="scaleSize" format="integer"/>
+        <attr name="scaleItemCount" format="integer"/>
+        <attr name="scaleWidth" format="dimension"/>
+    </declare-styleable>
+</resources>

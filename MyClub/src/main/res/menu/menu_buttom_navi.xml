@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_dynamic"
+        android:icon="@drawable/dongtai1"
+        android:title="动态" />
+    <item
+        android:id="@+id/menu_message"
+        android:icon="@drawable/xiaoxi1"
+        android:title="联系人" />
+    <item
+        android:id="@+id/menu_club"
+        android:icon="@drawable/shetuan1"
+        android:title="社团" />
+    <item
+        android:id="@+id/menu_person"
+        android:icon="@drawable/geren1"
+        android:title="个人" />
+</menu>

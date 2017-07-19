@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e9e9e9">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tl_dt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:background="#ffffff"
+                app:tabSelectedTextColor="@drawable/bottom_navigation_selector"
+                app:tabIndicatorHeight="3dp"
+                app:tabIndicatorColor="#0080ff"
+                app:tabMode="fixed">
+            </android.support.design.widget.TabLayout>
+
+            <ImageView
+                android:id="@+id/write"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:src="@drawable/ic_edit"
+                android:padding="5dp"
+                android:layout_height="match_parent"
+                android:background="#fff"/>
+        </LinearLayout>
+
+
+        <android.support.v4.view.ViewPager
+        android:id="@+id/vp_dt"
+        android:scrollbars="none"
+        android:layout_weight="10"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    </android.support.v4.view.ViewPager>
+    </LinearLayout>
+
+</RelativeLayout>
