@@ -2,6 +2,7 @@ package com.martin.myclub.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -49,11 +50,15 @@ public class RegisterActivity extends AppCompatActivity {
         yanzheng = (EditText) findViewById(R.id.yanzheng);
         getYanzheng = (Button) findViewById(R.id.get_yanzheng);
         pass = (EditText) findViewById(R.id.pass);
+        //调用倒计时方法
+        final MyCountDownTimer myCountDownTimer = new MyCountDownTimer(60000,1000);
+
         //获取验证码按钮
         getYanzheng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(phoneNumber.getText().toString())){
+                    myCountDownTimer.start();
                     sendSMS();      //发送短信
                     queryState();       //获取短信发送状态
                 } else {
@@ -140,5 +145,34 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    /**
+     * 复写倒计时类
+     */
+
+    private class MyCountDownTimer extends CountDownTimer {
+
+        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        //计时过程
+        @Override
+        public void onTick(long l) {
+            //防止计时过程中重复点击
+            getYanzheng.setClickable(false);
+            getYanzheng.setText(l/1000+"s 后重试");
+
+        }
+
+        //计时完毕的方法
+        @Override
+        public void onFinish() {
+            //重新给Button设置文字
+            getYanzheng.setText("重新获取验证码");
+            //设置可点击
+            getYanzheng.setClickable(true);
+        }
     }
 }
