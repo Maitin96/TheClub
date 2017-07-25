@@ -12,7 +12,7 @@
         android:padding="5dp">
 
         <Button
-            android:id="@+id/imageView"
+            android:id="@+id/bt_info_back"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/ic_back"
@@ -36,7 +36,6 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerHorizontal="true"
-        app:iciv_bigimage="@drawable/head_pic"
         android:layout_marginTop="80dp"/>
     <TextView
         android:id="@+id/tv_change_hp"
@@ -74,10 +73,10 @@
             android:layout_marginLeft="10dp"/>
         <TextView
             android:id="@+id/person_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="70dp"
-            android:text="孤酒丷"
+            android:text=""
             android:textColor="#000"
             android:textSize="18sp"/>
     </LinearLayout>

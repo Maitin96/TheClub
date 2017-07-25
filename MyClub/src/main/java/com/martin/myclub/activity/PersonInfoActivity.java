@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -23,13 +24,15 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martin.myclub.R;
-import com.martin.myclub.bean.PersonInfo;
+import com.martin.myclub.bean.MyUser;
 import com.martin.myclub.view.IdentityImageView;
 
 
@@ -39,9 +42,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.QueryListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 
 /**
@@ -58,47 +63,76 @@ public class PersonInfoActivity extends AppCompatActivity {
 
     private Uri imageUri;
 
+    MyUser user;
+    String objectId;
+
     public static final int TAKE_PHOTO = 1;
     public static final int CHOOSE_PHOTO = 2;
-    private PersonInfo personInfo;
+
+    public static final int REQUEST_NAME = 3;
+    public static final int REQUEST_SIGN = 4;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preson_info);
-
-//        personInfo = new PersonInfo();
+        user = new MyUser();
+        objectId = MyUser.getCurrentUser().getObjectId();
         initViews();
+        initListener();
+    }
 
-//        personInfo.save(new SaveListener<String>() {
-//            @Override
-//            public void done(String s, BmobException e) {
-//                if (e == null){
-//                    Log.d("PersonInfoActivity","个人信息保存成功");
-//                } else {
-//                    Log.e("bmob","失败："+e.getMessage()+","+e.getErrorCode());
-//                }
-//            }
-//        });
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        user.update(objectId, new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if (e == null){
+                    Log.e("PersonInfoActivity","修改成功");
+                } else {
+                    Log.e("PersonInfoActivity","修改失败" + e);
+                }
+            }
+        });
     }
 
     private void initViews(){
         headPic = (IdentityImageView) findViewById(R.id.info_hp);
-        headPic.getBigCircleImageView().setImageResource(R.drawable.head_pic);
-
-        headPic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSelectDialog();
-            }
-        });
-
         personName = (TextView) findViewById(R.id.person_name);
         tvSign = (TextView) findViewById(R.id.tv_sign);
-
         cbMale = (CheckBox) findViewById(R.id.cb_male);
         cbFemale = (CheckBox) findViewById(R.id.cb_female);
 
+        BmobQuery<MyUser> bmobQuery = new BmobQuery<>();
+        bmobQuery.getObject(objectId, new QueryListener<MyUser>() {
+            @Override
+            public void done(MyUser myUser, BmobException e) {
+                if (e == null){
+                    //从服务器获取头像信息
+                    String avatar = myUser.getAvatar();
+                    headPic.getBigCircleImageView().setImageURI(Uri.parse(avatar));
+                    //从服务器获取昵称
+                    String name = myUser.getName();
+                    personName.setText(name);
+                    //获取签名
+                    String sign = myUser.getSign();
+                    tvSign.setText(sign);
+                    //获取性别
+                    boolean isMan = myUser.isMan();
+                    cbMale.setChecked(isMan);
+
+                    Log.e("QUERY!!!","初始化个人资料成功");
+                } else {
+                    Log.e("QUERY!!!","查询失败" + e);
+                }
+
+            }
+        });
+        /**
+         * 设置性别CheckBox的逻辑
+         */
         cbMale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -118,6 +152,42 @@ public class PersonInfoActivity extends AppCompatActivity {
                 } else {
                     cbMale.setChecked(true);
                 }
+            }
+        });
+
+       Button btBack = (Button) findViewById(R.id.bt_info_back);
+        btBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    private void initListener() {
+        //点击更换头像
+        headPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSelectDialog();
+            }
+        });
+        //点击更换昵称
+        personName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //点击跳转到另一个页面更改昵称
+                Intent intent = new Intent(PersonInfoActivity.this,SetNameActivity.class);
+                startActivityForResult(intent,REQUEST_NAME);
+            }
+        });
+        //点击更换签名
+        tvSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PersonInfoActivity.this,SetSignActivity.class);
+                startActivityForResult(intent,REQUEST_SIGN);
+
             }
         });
     }
@@ -207,7 +277,7 @@ public class PersonInfoActivity extends AppCompatActivity {
                         //将拍摄的照片显示出来
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
                         headPic.getBigCircleImageView().setImageBitmap(bitmap);
-//                        saveBitmapFile(bitmap);
+                        saveBitmapFile(bitmap);
                     } catch (FileNotFoundException e){
                         e.printStackTrace();
                     }
@@ -223,6 +293,19 @@ public class PersonInfoActivity extends AppCompatActivity {
                         handleImageBeforeKitKat(data);
                     }
                 }
+                break;
+            case REQUEST_NAME:
+                //接受回传的intent，获取字符串，设置给TextView
+                String name = data.getStringExtra("name");
+                personName.setText(name);
+                user.setName(name);
+                break;
+            case REQUEST_SIGN:
+                //接受回传的intent，获取字符串，设置给TextView
+                String sign = data.getStringExtra("sign");
+                tvSign.setText(sign);
+                user.setSign(sign);
+                break;
         }
     }
 
@@ -268,7 +351,7 @@ public class PersonInfoActivity extends AppCompatActivity {
         if (imagePath != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             headPic.getBigCircleImageView().setImageBitmap(bitmap);
-//            saveBitmapFile(bitmap);
+            saveBitmapFile(bitmap);
 
 //            Log.d("disPlayPath","enter dis PlayPath . SET");
         } else {
@@ -289,19 +372,26 @@ public class PersonInfoActivity extends AppCompatActivity {
         return path;
     }
 
+    /**
+     * 将bitmap转化为File
+     * @param bitmap
+     */
     private void saveBitmapFile(Bitmap bitmap){
-        File file = new File(getExternalCacheDir(),"pic.jpg");
+        File file = new File("data/data/com.martin.myclub/avatar.jpg");
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-
-            BmobFile bmobFile = new BmobFile(file);
-            personInfo.setPic(bmobFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
 
             bos.flush();
             bos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        String path = file.getAbsolutePath();
+        BmobFile bmobFile = new BmobFile("avatar",null,path);
+        String url = bmobFile.getUrl();
+        user.setAvatar(url);
+        user.setName("小团");
+        Log.e("TAG","路径"+ path + "Url" + url);
     }
 }

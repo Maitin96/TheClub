@@ -116,7 +116,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
     //保存账户
     private void SaveAccount(){
-        BmobUser user = new BmobUser();
+        MyUser user = new MyUser();
+        user.setName("小团");
+        user.setMan(true);
+        user.setAvatar(null);
+        user.setSign("这个人很神秘，什么也有留下哦~");
         user.setUsername(phoneNumber.getText().toString());
         user.setPassword(pass.getText().toString());
         user.signUp(new SaveListener<MyUser>() {

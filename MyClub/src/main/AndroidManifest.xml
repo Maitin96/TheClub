@@ -54,6 +54,8 @@
         <activity android:name=".activity.ChatActivity"/>
         <activity android:name=".activity.FindFriendActivity"/>
         <activity android:name=".activity.WriteDynamicActivity"/>
+        <activity android:name=".activity.SetNameActivity"/>
+        <activity android:name=".activity.SetSignActivity"/>
     </application>
 
 </manifest>
