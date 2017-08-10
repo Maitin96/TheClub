@@ -17,6 +17,8 @@ allprojects {
         jcenter()
         //Bmob的maven仓库地址--必填
         maven { url "https://raw.github.com/bmob/bmob-android-sdk/master" }
+        // 下拉刷新控件的仓库依赖
+        maven { url "https://jitpack.io" }
     }
 }
 
