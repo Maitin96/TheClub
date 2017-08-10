@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * Created by Martin on 2017/7/3.
- * 社团动态页面
+ * 动态布局页面
  */
 public class LayoutDynamic extends Fragment {
 

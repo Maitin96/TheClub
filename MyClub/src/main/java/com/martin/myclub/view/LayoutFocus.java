@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * Created by Martin on 2017/7/10.
+ * 我的关注页
  */
 public class LayoutFocus extends Fragment {
 
@@ -43,8 +44,6 @@ public class LayoutFocus extends Fragment {
         dynamicMsgList = new ArrayList<>();
         for (int i = 1;i < 9;i++){
             DynamicMsg dynamicMsg = new DynamicMsg();
-            dynamicMsg.setUserName("Club");
-            dynamicMsg.setHeadPic(R.drawable.ic_launcher);
             dynamicMsg.setContent("ah,ah,ah,let's go!");
 
             long currentTime = System.currentTimeMillis();
@@ -55,7 +54,7 @@ public class LayoutFocus extends Fragment {
             dynamicMsg.setPicture(R.drawable.good);
             dynamicMsgList.add(dynamicMsg);
 
-            adapterDynamicItem = new AdapterDynamicItem(getContext(),dynamicMsgList);
+            adapterDynamicItem = new AdapterDynamicItem(getContext());
             dynamicRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             dynamicRecyclerView.setAdapter(adapterDynamicItem);
         }
