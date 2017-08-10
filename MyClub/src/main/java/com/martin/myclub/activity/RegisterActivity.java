@@ -1,6 +1,8 @@
 package com.martin.myclub.activity;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.martin.myclub.R;
 import com.martin.myclub.bean.MyUser;
+import com.martin.myclub.db.PersonInfoOpenHelper;
 
 import cn.bmob.sms.BmobSMS;
 import cn.bmob.sms.bean.BmobSmsState;
@@ -116,6 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
     //保存账户
     private void SaveAccount(){
+        //保存用户信息到Bomb服务器
         MyUser user = new MyUser();
         user.setName("小团");
         user.setMan(true);
@@ -128,15 +132,29 @@ public class RegisterActivity extends AppCompatActivity {
             public void done(MyUser myUser, cn.bmob.v3.exception.BmobException e) {
                 if (e == null){
                     Log.e("Register","注册成功");
+
+                    //保存用户信息到本地数据库
+                    String objectId = myUser.getObjectId();
+                    PersonInfoOpenHelper openHelper = new PersonInfoOpenHelper(RegisterActivity.this);
+                    SQLiteDatabase db = openHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    values.put("objectId",objectId);
+                    values.put("name","小团");
+                    values.put("isMan",true);
+                    values.put("avatar","");
+                    values.put("sign","这个人很神秘，什么也没有留下~");
+                    db.insert("personInfo",null,values);
+                    db.close();
+                    Log.e("RegisterActivity","数据库保存成功");
+
+                    //跳转到主页面
+                    Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
+                    startActivity(intent);
                 } else {
                     Log.e("Register","注册失败" + e);
                 }
             }
         });
-
-        //跳转到主页面
-        Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
-        startActivity(intent);
     }
 
     //查询发送状态

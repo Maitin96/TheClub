@@ -2,14 +2,20 @@ package com.martin.myclub.activity;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,6 +39,7 @@ import android.widget.Toast;
 
 import com.martin.myclub.R;
 import com.martin.myclub.bean.MyUser;
+import com.martin.myclub.db.PersonInfoOpenHelper;
 import com.martin.myclub.view.IdentityImageView;
 
 
@@ -72,6 +79,12 @@ public class PersonInfoActivity extends AppCompatActivity {
     public static final int REQUEST_NAME = 3;
     public static final int REQUEST_SIGN = 4;
 
+    private String avatarForFragment;
+    private String nameForFragment;
+    private String signForFragment;
+    private PersonInfoOpenHelper openHelper;
+    private SQLiteDatabase db;
+    private ContentValues values;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,6 +99,7 @@ public class PersonInfoActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        user.setMan(cbMale.isChecked());
         user.update(objectId, new UpdateListener() {
             @Override
             public void done(BmobException e) {
@@ -96,6 +110,10 @@ public class PersonInfoActivity extends AppCompatActivity {
                 }
             }
         });
+
+        db.update("personInfo", values,"objectId = ?",new String[]{objectId});
+        db.close();
+        Log.e("PersonInfoActivity","本地数据更新成功");
     }
 
     private void initViews(){
@@ -104,32 +122,17 @@ public class PersonInfoActivity extends AppCompatActivity {
         tvSign = (TextView) findViewById(R.id.tv_sign);
         cbMale = (CheckBox) findViewById(R.id.cb_male);
         cbFemale = (CheckBox) findViewById(R.id.cb_female);
+        //首先从本地数据库获取用户信息
+        getPersonInfoFromDB();
+        /**
+         * 此时需要判断是否有网络连接，如果有，从服务器获取用户数据更新用户信息
+         */
+        if (isNetworkAvailable(PersonInfoActivity.this)){
+            getPersonInfoFromBmob();
+        } else {
+            Toast.makeText(PersonInfoActivity.this,"当前无网络连接",Toast.LENGTH_SHORT).show();
+        }
 
-        BmobQuery<MyUser> bmobQuery = new BmobQuery<>();
-        bmobQuery.getObject(objectId, new QueryListener<MyUser>() {
-            @Override
-            public void done(MyUser myUser, BmobException e) {
-                if (e == null){
-                    //从服务器获取头像信息
-                    String avatar = myUser.getAvatar();
-                    headPic.getBigCircleImageView().setImageURI(Uri.parse(avatar));
-                    //从服务器获取昵称
-                    String name = myUser.getName();
-                    personName.setText(name);
-                    //获取签名
-                    String sign = myUser.getSign();
-                    tvSign.setText(sign);
-                    //获取性别
-                    boolean isMan = myUser.isMan();
-                    cbMale.setChecked(isMan);
-
-                    Log.e("QUERY!!!","初始化个人资料成功");
-                } else {
-                    Log.e("QUERY!!!","查询失败" + e);
-                }
-
-            }
-        });
         /**
          * 设置性别CheckBox的逻辑
          */
@@ -190,6 +193,102 @@ public class PersonInfoActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    /**
+     * 从Bmob服务器上获取用户资料
+     * 更新本地数据库中的数据
+     */
+    private void getPersonInfoFromBmob(){
+        BmobQuery<MyUser> bmobQuery = new BmobQuery<>();
+        bmobQuery.getObject(objectId, new QueryListener<MyUser>() {
+            @Override
+            public void done(MyUser myUser, BmobException e) {
+                if (e == null){
+                    //从服务器获取头像信息
+                    String avatar = myUser.getAvatar();
+                    headPic.getBigCircleImageView().setImageURI(Uri.parse(avatar));
+                    //从服务器获取昵称
+                    String name = myUser.getName();
+                    personName.setText(name);
+                    //获取签名
+                    String sign = myUser.getSign();
+                    tvSign.setText(sign);
+                    //获取性别
+                    boolean isMan = myUser.isMan();
+                    cbMale.setChecked(isMan);
+
+                    //更新本地数据库中的资料
+                    openHelper = new PersonInfoOpenHelper(PersonInfoActivity.this);
+                    db = openHelper.getWritableDatabase();
+                    values = new ContentValues();
+                    values.put("avatar",avatar);
+                    values.put("name",name);
+                    values.put("sign",sign);
+                    values.put("isMan",isMan);
+
+                    Log.e("QUERY!!!","初始化个人资料成功");
+                } else {
+                    Log.e("QUERY!!!","查询失败" + e);
+                }
+
+            }
+        });
+    }
+
+    /**
+     * 从本地数据库获取用户缓存的资料
+     */
+    private void getPersonInfoFromDB(){
+        PersonInfoOpenHelper openHelper = new PersonInfoOpenHelper(PersonInfoActivity.this);
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+
+        Cursor cursor = db.query("personInfo", null, null, null, null, null, null);
+        if (cursor.moveToFirst()){
+            do {
+                //遍历cursor对象，获取用户数据
+                String name = cursor.getString(cursor.getColumnIndex("name"));
+                String avatar = cursor.getString(cursor.getColumnIndex("avatar"));
+                String sign = cursor.getString(cursor.getColumnIndex("sign"));
+
+                headPic.getBigCircleImageView().setImageURI(Uri.parse(avatar));
+                personName.setText(name);
+                tvSign.setText(sign);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+    }
+
+    public boolean isNetworkAvailable(Activity activity)
+    {
+        Context context = activity.getApplicationContext();
+        // 获取手机所有连接管理对象（包括对wi-fi,net等连接的管理）
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivityManager == null)
+        {
+            return false;
+        }
+        else
+        {
+            // 获取NetworkInfo对象
+            NetworkInfo[] networkInfo = connectivityManager.getAllNetworkInfo();
+
+            if (networkInfo != null && networkInfo.length > 0)
+            {
+                for (int i = 0; i < networkInfo.length; i++)
+                {
+                    Log.d("Network",i + "===状态===" + networkInfo[i].getState());
+                    Log.d("Network",i + "===类型===" + networkInfo[i].getTypeName());
+                    // 判断当前网络状态是否为连接状态
+                    if (networkInfo[i].getState() == NetworkInfo.State.CONNECTED)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private void showSelectDialog(){
@@ -299,12 +398,14 @@ public class PersonInfoActivity extends AppCompatActivity {
                 String name = data.getStringExtra("name");
                 personName.setText(name);
                 user.setName(name);
+                nameForFragment = name;
                 break;
             case REQUEST_SIGN:
                 //接受回传的intent，获取字符串，设置给TextView
                 String sign = data.getStringExtra("sign");
                 tvSign.setText(sign);
                 user.setSign(sign);
+                signForFragment = sign;
                 break;
         }
     }
@@ -392,6 +493,23 @@ public class PersonInfoActivity extends AppCompatActivity {
         String url = bmobFile.getUrl();
         user.setAvatar(url);
         user.setName("小团");
+        avatarForFragment = url;
         Log.e("TAG","路径"+ path + "Url" + url);
+    }
+
+    /**
+     * 将数据回传到LayoutPerson中
+     * 分别是 头像，昵称，签名
+     */
+    public String returnAvatar(){
+        return avatarForFragment;
+    }
+
+    public String returnName(){
+        return nameForFragment;
+    }
+
+    public String returnSign(){
+        return signForFragment;
     }
 }

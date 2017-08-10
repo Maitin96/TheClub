@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 
 import com.martin.myclub.R;
+import com.martin.myclub.db.PersonInfoOpenHelper;
 
 /**
  * Splash闪屏页面
@@ -32,6 +34,7 @@ public class SplashActivity extends AppCompatActivity {
         initBomb();
         initView();
         initLoad();
+        initDataBase();
     }
 
     private void initView() {
@@ -95,5 +98,14 @@ public class SplashActivity extends AppCompatActivity {
         Bmob.initialize(this, "efcbb4f650eca73b83b11fd45dfc70b2", "bmob");
         //Bmob信息初始化
         BmobSMS.initialize(this,"efcbb4f650eca73b83b11fd45dfc70b2");
+    }
+
+    /**
+     * 初始化本地数据库
+     */
+    private void initDataBase(){
+        PersonInfoOpenHelper openHelper = new PersonInfoOpenHelper(this);
+        openHelper.getWritableDatabase();
+        Log.d("SplashActivity","个人信息数据库创建成功");
     }
 }

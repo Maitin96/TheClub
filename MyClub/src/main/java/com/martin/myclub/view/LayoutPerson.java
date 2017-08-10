@@ -1,8 +1,10 @@
 package com.martin.myclub.view;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -86,6 +88,24 @@ public class LayoutPerson extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
+//    /**
+//     * 调用碎片的生命周期，获取从Activity中获取的数据并且设置给响应的组件
+//     * @param activity
+//     */
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        if (((PersonInfoActivity)activity).returnAvatar() != null){
+//            identityImageView.getBigCircleImageView().setImageURI(Uri.parse(((PersonInfoActivity)activity).returnAvatar()));
+//        }
+//        if (((PersonInfoActivity)activity).returnName() != null){
+//            userID.setText(((PersonInfoActivity)activity).returnName());
+//        }
+//        if (((PersonInfoActivity)activity).returnSign() != null){
+//            userSign.setText(((PersonInfoActivity)activity).returnSign());
+//        }
+//    }
+
     private void initViews() {
         identityImageView = (IdentityImageView) rootView.findViewById(R.id.iiv);
         floatingActionButton = (FloatingActionButton) rootView.findViewById(R.id.fab);
@@ -93,7 +113,6 @@ public class LayoutPerson extends Fragment implements View.OnClickListener {
         ivNight = (ImageView) rootView.findViewById(R.id.iv_night);
         userID = (TextView) rootView.findViewById(R.id.user_ID);
         userSign = (TextView) rootView.findViewById(R.id.user_info_sign);
-
 
         BmobQuery<MyUser> bmobQuery = new BmobQuery<>();
         String objectId = MyUser.getCurrentUser().getObjectId();
@@ -142,6 +161,7 @@ public class LayoutPerson extends Fragment implements View.OnClickListener {
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 BmobUser.logOut();
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 
