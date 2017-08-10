@@ -56,6 +56,7 @@
         <activity android:name=".activity.WriteDynamicActivity"/>
         <activity android:name=".activity.SetNameActivity"/>
         <activity android:name=".activity.SetSignActivity"/>
+        <activity android:name=".activity.Dy_CompleteActivity"/>
     </application>
 
 </manifest>
