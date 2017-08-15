@@ -1,4 +1,4 @@
-package com.martin.myclub.view;
+package com.martin.myclub.activity.fragment;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;

@@ -1,4 +1,4 @@
-package com.martin.myclub.view;
+package com.martin.myclub.activity.fragment;
 
 import android.Manifest;
 import android.app.Activity;
@@ -46,6 +46,8 @@ import com.martin.myclub.activity.PersonInfoActivity;
 import com.martin.myclub.activity.SettingActivity;
 import com.martin.myclub.activity.SuggestActivity;
 import com.martin.myclub.bean.MyUser;
+import com.martin.myclub.view.IdentityImageView;
+import com.martin.myclub.view.RewritePopwindow;
 
 import org.w3c.dom.Text;
 

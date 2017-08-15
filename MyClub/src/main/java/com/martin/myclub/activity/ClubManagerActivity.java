@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by Martin on 2017/7/13.
+ * 社团管理页面
  */
 public class ClubManagerActivity extends AppCompatActivity {
     @Override

@@ -1,4 +1,4 @@
-package com.martin.myclub.view;
+package com.martin.myclub.activity.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;

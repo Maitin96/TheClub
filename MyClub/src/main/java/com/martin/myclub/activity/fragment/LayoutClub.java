@@ -1,4 +1,4 @@
-package com.martin.myclub.view;
+package com.martin.myclub.activity.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * Created by Martin on 2017/7/3.
- * 加入的社团列表
+ * 加入的社团列表(想舍弃)
  */
 public class LayoutClub extends Fragment{
 

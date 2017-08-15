@@ -1,4 +1,4 @@
-package com.martin.myclub.view;
+package com.martin.myclub.activity.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * Created by Martin on 2017/7/3.
- * 动态布局页面
+ * 动态Fragment的排版页面
  */
 public class LayoutDynamic extends Fragment {
 

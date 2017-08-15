@@ -1,13 +1,11 @@
-package com.martin.myclub.view;
+package com.martin.myclub.activity.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,6 @@ import android.widget.ImageView;
 
 import com.martin.myclub.R;
 import com.martin.myclub.activity.FindFriendActivity;
-import com.martin.myclub.activity.MainActivity;
 import com.martin.myclub.adapter.AdapterMainViewPager;
 
 import java.util.ArrayList;
@@ -23,7 +20,7 @@ import java.util.List;
 
 /**
  * Created by Martin on 2017/7/3.
- * 消息页面
+ * 联系人Fragment --> 排版页面
  */
 public class LayoutMessage extends Fragment{
 
@@ -57,7 +54,7 @@ public class LayoutMessage extends Fragment{
 
         adapterMsg.addFragment(new LayoutMsg());
         adapterMsg.addFragment(new LayoutContacts());
-        adapterMsg.addFragment(new LayoutClub());
+//        adapterMsg.addFragment(new LayoutClub());
 
         viewPager.setAdapter(adapterMsg);
         viewPager.setOffscreenPageLimit(3);
@@ -65,11 +62,13 @@ public class LayoutMessage extends Fragment{
 
         tabList.add(tabLayout.getTabAt(0));
         tabList.add(tabLayout.getTabAt(1));
-        tabList.add(tabLayout.getTabAt(2));
+//        tabList.add(tabLayout.getTabAt(2));
 
         tabList.get(0).setText("消息");
         tabList.get(1).setText("联系人");
-        tabList.get(2).setText("社团");
+
+        //TODO 暂时先舍弃，后期再讨论是否添加此群聊功能
+//        tabList.get(2).setText("社团");
 
     }
 }

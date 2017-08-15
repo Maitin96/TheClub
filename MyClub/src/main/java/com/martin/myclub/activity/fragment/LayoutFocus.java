@@ -1,4 +1,4 @@
-package com.martin.myclub.view;
+package com.martin.myclub.activity.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
