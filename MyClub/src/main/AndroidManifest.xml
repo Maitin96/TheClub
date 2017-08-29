@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.martin.myclub">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.martin.myclub"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -18,10 +19,13 @@
     <!--允许读取手机状态 用于创建BmobInstallation-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-    <application android:allowBackup="true"
-        android:icon="@mipmap/icon_launcher"
+    <application
+        tools:replace="android:allowBackup,android:icon,android:label,android:supportsRtl,android:theme"
+        android:allowBackup="true"
+        android:icon="@mipmap/club"
         android:label="@string/app_name"
-        android:supportsRtl="true" android:theme="@style/AppTheme">
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
 
         <provider
             android:authorities="com.martin.myclub.fileprovider"
@@ -54,9 +58,10 @@
         <activity android:name=".activity.ChatActivity"/>
         <activity android:name=".activity.FindFriendActivity"/>
         <activity android:name=".activity.WriteDynamicActivity"/>
-        <activity android:name=".activity.SetNameActivity"/>
-        <activity android:name=".activity.SetSignActivity"/>
         <activity android:name=".activity.Dy_CompleteActivity"/>
+        <activity android:name=".activity.ClubApplyActivity"/>
+        <activity android:name=".activity.ClubActivity"/>
+
     </application>
 
 </manifest>

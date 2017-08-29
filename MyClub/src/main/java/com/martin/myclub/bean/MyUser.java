@@ -1,6 +1,7 @@
 package com.martin.myclub.bean;
 
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobRelation;
 
 /**
  * Created by Martin on 2017/7/13.
@@ -19,6 +20,15 @@ public class MyUser extends BmobUser {
     //签名
     private String sign;
 
+    private BmobRelation club;
+
+    public BmobRelation getClub() {
+        return club;
+    }
+
+    public void setClub(BmobRelation club) {
+        this.club = club;
+    }
 
     public String getName() {
         return name;

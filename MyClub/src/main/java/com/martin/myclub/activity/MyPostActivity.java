@@ -36,5 +36,24 @@ public class MyPostActivity extends AppCompatActivity {
     private void initViews() {
         setContentView(R.layout.activity_my_post);
         recyclerView = (RecyclerView) findViewById(R.id.rv_my_post);
+
+        dynamicMsgList = new ArrayList<>();
+
+        DynamicMsg dynamicMsg = new DynamicMsg();
+
+        dynamicMsg.setContent("I'm waiting for you years");
+
+        long currentTime = System.currentTimeMillis();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年-MM月dd日-HH时mm分ss秒");
+        Date date = new Date(currentTime);
+
+        dynamicMsg.setTime(formatter.format(date));
+        dynamicMsg.setPicture(R.drawable.good);
+        dynamicMsgList.add(dynamicMsg);
+
+
+        adapterDynamicItem = new AdapterDynamicItem(MyPostActivity.this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MyPostActivity.this));
+        recyclerView.setAdapter(adapterDynamicItem);
     }
 }

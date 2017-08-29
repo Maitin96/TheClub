@@ -40,11 +40,11 @@ public class LoginActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
         initViews();
     }
 
     private void initViews(){
-        setContentView(R.layout.activity_login);
 
         etUserName = (EditText) findViewById(R.id.user_name);
         etPassword = (EditText) findViewById(R.id.password);
@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity{
         register = (TextView) findViewById(R.id.register);
         cbRemember = (CheckBox) findViewById(R.id.cb_remember);
 
-        sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         boolean isRemember = sp.getBoolean("remember_password",false);
         if (isRemember){

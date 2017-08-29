@@ -490,12 +490,10 @@ public class Dy_CompleteActivity extends AppCompatActivity implements View.OnCli
                     }
                 });
             }
-            // Todo
             mDynamic.setComment_counts(dynamic_comment_list.size() + 1);
             mDynamic.update(new UpdateListener() {
                 @Override
                 public void done(BmobException e) {
-                     //Todo
                     //设置评论数
                     mDynamic.setComment_counts(dynamic_comment_list.size());
                     tv_comments.setText(mDynamic.getComment_counts() + "");

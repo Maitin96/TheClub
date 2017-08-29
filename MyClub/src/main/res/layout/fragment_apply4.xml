@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="社团创建成功"
+        android:textSize="30dp"
+        android:padding="20dp"
+        android:gravity="center_horizontal"
+        android:textColor="#f5c37e"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1、您可以在个人页面进行社团管理"
+        android:layout_gravity="center"
+        android:padding="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2、您可以添加您的社团成员了"
+        android:layout_gravity="center"
+        android:padding="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3、赶快去管理您的社团吧!"
+        android:layout_gravity="center"
+        android:padding="10dp"/>
+    <Button
+        android:id="@+id/btn_finish"
+        android:layout_width="220dp"
+        android:layout_height="35dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:background="#5aabfc"
+        android:text="开启我的社团"
+        android:textColor="#fff" />
+</LinearLayout>
