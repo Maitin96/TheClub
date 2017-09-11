@@ -4,28 +4,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.martin.myclub.R;
 import com.martin.myclub.adapter.AdapterMainViewPager;
 import com.martin.myclub.util.BottomNavigationViewHelper;
-import com.martin.myclub.view.LayoutAllClub;
-import com.martin.myclub.view.LayoutClub;
-import com.martin.myclub.view.LayoutDynamic;
-import com.martin.myclub.view.LayoutMessage;
-import com.martin.myclub.view.LayoutPerson;
-import com.martin.myclub.view.LayoutSlide;
+import com.martin.myclub.activity.fragment.LayoutAllClub;
+import com.martin.myclub.activity.fragment.LayoutDynamic;
+import com.martin.myclub.activity.fragment.LayoutMessage;
+import com.martin.myclub.activity.fragment.LayoutPerson;
 import com.martin.myclub.view.NoScrollViewPager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Martin on 2017/7/2.
@@ -42,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         initViews();
+        initBombIM();
     }
 
     private void initViews() {
@@ -61,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.menu_message:
                         viewPager.setCurrentItem(1);
-
                         break;
                     case R.id.menu_club:
                         viewPager.setCurrentItem(2);
@@ -113,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(4);
+    }
+
+    private void initBombIM(){
 
     }
 }

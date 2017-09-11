@@ -1,4 +1,4 @@
-package com.martin.myclub.view;
+package com.martin.myclub.activity.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,13 +16,15 @@ import com.martin.myclub.R;
 import com.martin.myclub.activity.ChatActivity;
 import com.martin.myclub.adapter.SortAdapter;
 import com.martin.myclub.util.User;
+import com.martin.myclub.view.IdentityImageView;
+import com.martin.myclub.view.SideBar;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
  * Created by Martin on 2017/7/3.
- * 联系人页
+ * 联系人Fragment --> 联系人页面
  */
 public class LayoutContacts extends Fragment {
     private View rootView;

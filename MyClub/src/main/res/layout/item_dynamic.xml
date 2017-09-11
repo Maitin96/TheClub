@@ -67,35 +67,60 @@
         android:padding="5dp">
 
         <TextView
+            android:id="@+id/tv_looked_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
-            android:text="浏览66次"
+            android:layout_centerVertical="true"
+            android:text="浏览0次"
             android:textSize="15sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp">
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
 
-            <ImageView
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_like"-->
+            <!--android:layout_width="17dp"-->
+            <!--android:layout_height="17dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_marginTop="1dp"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:background="@drawable/like_w" />-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_collect"-->
+            <!--android:layout_width="18dp"-->
+            <!--android:layout_height="18dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:background="@drawable/collect_w" />-->
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/selected" />
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/selected" />
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/comments_16px" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/selected" />
+                <TextView
+                    android:id="@+id/tv_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="3dp"
+                    android:text="12" />
+            </LinearLayout>
+
+
         </LinearLayout>
 
     </RelativeLayout>
@@ -108,10 +133,11 @@
         android:background="#9e9e9e" />
 
     <TextView
+        android:id="@+id/tv_person_like"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="习近平，胡锦涛等 好几个人觉得很赞"
+        android:text=""
         android:textColor="#2828ff" />
 
     <View

@@ -1,4 +1,4 @@
-package com.martin.myclub.view;
+package com.martin.myclub.activity.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * Created by Martin on 2017/7/3.
- * 消息页面
+ * 联系人Fragment --> 消息页面
  */
 public class LayoutMsg extends Fragment {
     private View rootView;

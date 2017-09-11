@@ -52,7 +52,7 @@
                 android:text="孤酒丷"
                 android:textColor="#000"
                 android:layout_below="@+id/iv_bg"
-                android:layout_alignStart="@+id/sign"
+                android:layout_alignStart="@+id/user_info_sign"
                 android:layout_marginTop="3dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
                 android:textSize="14sp"
                 android:layout_alignParentBottom="true"
                 android:layout_toEndOf="@+id/iiv"
-                android:id="@+id/sign" />
+                android:id="@+id/user_info_sign" />
         </RelativeLayout>
 
         <LinearLayout
@@ -425,6 +425,15 @@
                 android:layout_marginRight="20dp"
                 android:background="@drawable/img_right_arrow" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/bt_out"
+            android:layout_margin="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="退 出 登 录"
+            android:textSize="18sp"
+            android:textColor="#f00"/>
 
     </LinearLayout>
 </ScrollView>

@@ -40,8 +40,7 @@ public class MyPostActivity extends AppCompatActivity {
         dynamicMsgList = new ArrayList<>();
 
         DynamicMsg dynamicMsg = new DynamicMsg();
-        dynamicMsg.setUserName("Coco");
-        dynamicMsg.setHeadPic(R.drawable.avasterwe);
+
         dynamicMsg.setContent("I'm waiting for you years");
 
         long currentTime = System.currentTimeMillis();
@@ -53,7 +52,7 @@ public class MyPostActivity extends AppCompatActivity {
         dynamicMsgList.add(dynamicMsg);
 
 
-        adapterDynamicItem = new AdapterDynamicItem(MyPostActivity.this, dynamicMsgList);
+        adapterDynamicItem = new AdapterDynamicItem(MyPostActivity.this);
         recyclerView.setLayoutManager(new LinearLayoutManager(MyPostActivity.this));
         recyclerView.setAdapter(adapterDynamicItem);
     }

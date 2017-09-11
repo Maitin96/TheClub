@@ -1,8 +1,10 @@
-package com.martin.myclub.view;
+package com.martin.myclub.activity.fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -27,6 +29,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,16 +38,25 @@ import android.widget.Toast;
 import com.martin.myclub.R;
 import com.martin.myclub.activity.ClubManagerActivity;
 import com.martin.myclub.activity.HistoryActivity;
+import com.martin.myclub.activity.LoginActivity;
 import com.martin.myclub.activity.MainActivity;
 import com.martin.myclub.activity.MyFavorActivity;
 import com.martin.myclub.activity.MyPostActivity;
 import com.martin.myclub.activity.PersonInfoActivity;
 import com.martin.myclub.activity.SettingActivity;
 import com.martin.myclub.activity.SuggestActivity;
+import com.martin.myclub.bean.MyUser;
+import com.martin.myclub.view.IdentityImageView;
+import com.martin.myclub.view.RewritePopwindow;
 
 import org.w3c.dom.Text;
 
 import java.net.Inet4Address;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.QueryListener;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -66,6 +78,10 @@ public class LayoutPerson extends Fragment implements View.OnClickListener {
 
     private boolean isNight = false;
 
+    public static final int REQUEST_INFO = 6;
+    private TextView userID;
+    private TextView userSign;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -74,12 +90,52 @@ public class LayoutPerson extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
+//    /**
+//     * 调用碎片的生命周期，获取从Activity中获取的数据并且设置给响应的组件
+//     * @param activity
+//     */
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        if (((PersonInfoActivity)activity).returnAvatar() != null){
+//            identityImageView.getBigCircleImageView().setImageURI(Uri.parse(((PersonInfoActivity)activity).returnAvatar()));
+//        }
+//        if (((PersonInfoActivity)activity).returnName() != null){
+//            userID.setText(((PersonInfoActivity)activity).returnName());
+//        }
+//        if (((PersonInfoActivity)activity).returnSign() != null){
+//            userSign.setText(((PersonInfoActivity)activity).returnSign());
+//        }
+//    }
+
     private void initViews() {
         identityImageView = (IdentityImageView) rootView.findViewById(R.id.iiv);
         floatingActionButton = (FloatingActionButton) rootView.findViewById(R.id.fab);
         imageView = (ImageView) rootView.findViewById(R.id.iv_bg);
         ivNight = (ImageView) rootView.findViewById(R.id.iv_night);
+        userID = (TextView) rootView.findViewById(R.id.user_ID);
+        userSign = (TextView) rootView.findViewById(R.id.user_info_sign);
 
+        BmobQuery<MyUser> bmobQuery = new BmobQuery<>();
+        String objectId = MyUser.getCurrentUser().getObjectId();
+        bmobQuery.getObject(objectId, new QueryListener<MyUser>() {
+            @Override
+            public void done(MyUser myUser, BmobException e) {
+                if (e == null){
+                    //设置tab4的头像显示
+                    String avatar = myUser.getAvatar();
+                    identityImageView.getBigCircleImageView().setImageURI(Uri.parse(avatar));
+                    //设置tab4昵称
+                    String name = myUser.getName();
+                    userID.setText(name);
+                    //设置tab4签名
+                    String sign = myUser.getSign();
+                    userSign.setText(sign);
+                }
+            }
+        });
+
+        //夜间模式
         ivNight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +155,17 @@ public class LayoutPerson extends Fragment implements View.OnClickListener {
         LinearLayout clubManage = (LinearLayout) rootView.findViewById(R.id.club_manage);
         LinearLayout share = (LinearLayout) rootView.findViewById(R.id.share);
         LinearLayout suggest = (LinearLayout) rootView.findViewById(R.id.suggest);
+
+        Button btSingOut = (Button) rootView.findViewById(R.id.bt_out);
+        btSingOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                BmobUser.logOut();
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
 
         myPost.setOnClickListener(this);
         myFavor.setOnClickListener(this);
@@ -147,7 +214,8 @@ public class LayoutPerson extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), PersonInfoActivity.class);
-                getContext().startActivity(intent);
+//                startActivityForResult(intent,REQUEST_INFO);
+                startActivity(intent);
             }
         });
     }

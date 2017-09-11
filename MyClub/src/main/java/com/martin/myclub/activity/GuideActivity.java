@@ -42,7 +42,7 @@ public class GuideActivity extends AppCompatActivity {
         setContentView(R.layout.activity_guide);
 
         //加载View到ViewList集合中
-        final LayoutInflater inflater = LayoutInflater.from(this);
+        final LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
         viewList = new ArrayList<>();
         viewList.add(inflater.inflate(R.layout.guide_page1,null));

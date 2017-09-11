@@ -67,6 +67,7 @@
             android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:background="@null"
             android:hint="选填，便于我们联系"/>
     </LinearLayout>
