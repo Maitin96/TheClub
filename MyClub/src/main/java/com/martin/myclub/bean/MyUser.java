@@ -1,6 +1,7 @@
 package com.martin.myclub.bean;
 
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobRelation;
 
 /**
@@ -14,7 +15,7 @@ public class MyUser extends BmobUser {
     //性别
     private boolean isMan;
     //头像
-    private String avatar;
+    private BmobFile dp;
     //背景
     private String background;
     //签名
@@ -38,12 +39,12 @@ public class MyUser extends BmobUser {
         this.name = name;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public BmobFile getDp() {
+        return dp;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setDp(BmobFile dp) {
+        this.dp = dp;
     }
 
     public String getBackground() {

@@ -45,7 +45,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UploadFileListener;
 
 /**
- * Created by Administrator on 2017/8/15.
+ * Created by Edward on 2017/8/15.
  */
 
 public class Fragment_apply1 extends Fragment implements View.OnClickListener {

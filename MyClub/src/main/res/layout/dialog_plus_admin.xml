@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_dynamic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发个动态"
+        android:textSize="18sp"
+        android:clickable="true"/>
+    <View
+    android:layout_marginTop="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="#9e9e9e" />
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/tv_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发布活动"
+        android:textSize="18sp"
+        android:clickable="true"/>
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#9e9e9e" />
+    <!--通告-->
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/tv_announcement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发布通告"
+        android:textSize="18sp"
+        android:clickable="true"/>
+</LinearLayout>

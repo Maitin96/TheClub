@@ -37,7 +37,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
 /**
- * Created by Martin on 2017/7/10.
+ * Created by Edward on 2017/7/10.
  * 社团列表，所有社团
  */
 public class LayoutAllClub extends Fragment {

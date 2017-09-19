@@ -1,19 +1,23 @@
 package com.martin.myclub.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.martin.myclub.R;
 import com.martin.myclub.activity.fragment.Fragment_club_activity;
@@ -55,6 +59,9 @@ public class ClubActivity extends AppCompatActivity {
     private CoordinatorLayout mainLayout;
     private Toolbar toolBar;
     private CollapsingToolbarLayout collapsing_toolbar;
+    private FloatingActionButton floatingActionButton;
+
+    private boolean isAdmin = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +73,7 @@ public class ClubActivity extends AppCompatActivity {
     }
 
     private void initView() {
+
         loadingLayout = (LinearLayout) findViewById(R.id.loading);
         barLayout = (AppBarLayout) findViewById(R.id.bar_layout);
         mainLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
@@ -77,6 +85,15 @@ public class ClubActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setOffscreenPageLimit(2);
+
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("ClubActivity", "floatingActionButton: 被点击了");
+                showPlusDialog(isAdmin);
+            }
+        });
 
         requestData();
     }
@@ -97,6 +114,57 @@ public class ClubActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    /**
+     * 显示关于发布社团动态或
+     *
+     * @param isAdmin
+     */
+    private void showPlusDialog(boolean isAdmin) {
+        if (isAdmin) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            final AlertDialog dialog = builder.create();
+            View view = View.inflate(this, R.layout.dialog_plus_admin, null);
+
+            TextView tv_dynamic = (TextView) view.findViewById(R.id.tv_dynamic);
+            TextView tv_activity = (TextView) view.findViewById(R.id.tv_activity);
+            TextView tv_announcement = (TextView) view.findViewById(R.id.tv_announcement);
+            tv_dynamic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setClass(ClubActivity.this,ClubWriteDynamicActivity.class);
+                    intent.putExtra("isAdmin",true);
+                    startActivity(intent);
+                    dialog.dismiss();
+                }
+            });
+            tv_activity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(ClubActivity.this,ClubWriteActivityActivity.class));
+                    dialog.dismiss();
+                }
+            });
+            tv_announcement.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(ClubActivity.this,ClubWriteAnnouncementActivity.class));
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.setView(view);
+            dialog.show();
+        }else{
+            //不是管理员   进入发表社团内部动态的页面
+            Intent intent = new Intent();
+            intent.setClass(ClubActivity.this,ClubWriteDynamicActivity.class);
+            intent.putExtra("isAdmin",false);
+            startActivity(intent);
+        }
+
     }
 
     /**
@@ -122,8 +190,10 @@ public class ClubActivity extends AppCompatActivity {
                         if (currentUser.getObjectId().equals(user.getObjectId())) {
                             // Todo ViewPager多一项管理tab
                             setViewPager(true);
+                            isAdmin = true;
                         } else {
                             setViewPager(false);
+                            isAdmin = false;
                         }
                         showMainInterface(true);
                     }
@@ -193,5 +263,12 @@ public class ClubActivity extends AppCompatActivity {
                         requestData();
                     }
                 });
+    }
+
+    public String getClubId(){
+        if(!TextUtils.isEmpty(clubObjId)){
+            return clubObjId;
+        }
+        return null;
     }
 }

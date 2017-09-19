@@ -61,6 +61,9 @@
         <activity android:name=".activity.Dy_CompleteActivity"/>
         <activity android:name=".activity.ClubApplyActivity"/>
         <activity android:name=".activity.ClubActivity"/>
+        <activity android:name=".activity.ClubWriteDynamicActivity"/>
+        <activity android:name=".activity.ClubWriteActivityActivity"/>
+        <activity android:name=".activity.ClubWriteAnnouncementActivity"/>
 
     </application>
 
