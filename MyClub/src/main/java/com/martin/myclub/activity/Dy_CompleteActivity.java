@@ -311,7 +311,6 @@ public class Dy_CompleteActivity extends AppCompatActivity implements View.OnCli
                     break;
                 }
             }
-
         }
     }
 
@@ -464,7 +463,6 @@ public class Dy_CompleteActivity extends AppCompatActivity implements View.OnCli
                     public void done(String s, BmobException e) {
                         if(e == null){
                             et_say.setText("");
-                            et_say.setFocusable(false);
                             dynamic_comment_list.add(curr_comm_position + 1,dc);
                             refreshCommentData(dynamic_comment_list);
                         }
@@ -481,7 +479,6 @@ public class Dy_CompleteActivity extends AppCompatActivity implements View.OnCli
                     public void done(String s, BmobException e) {
                         if(e == null){
                             et_say.setText("");
-                            et_say.setFocusable(false);
                             dynamic_comment_list.add(dc);
                             refreshCommentData(dynamic_comment_list);
                         }else{

@@ -55,12 +55,17 @@ public class ClubWriteDynamicActivity extends AppCompatActivity implements View.
     private ImageView iv_return;
     private EditText et_content;
     private PhotoUtils photoUtils;
+    private boolean isAdmin;
+    private String clubObjId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         currentUser = BmobUser.getCurrentUser(MyUser.class);
         intent = getIntent();
+        isAdmin = intent.getBooleanExtra("isAdmin", false);
+        clubObjId = intent.getStringExtra("clubObjId");
+
         setContentView(R.layout.activity_club_write_dynamic);
         initView();
     }
@@ -136,6 +141,7 @@ public class ClubWriteDynamicActivity extends AppCompatActivity implements View.
      */
     private void upload(ClubDynamic clubDynamic) {
         clubDynamic.setUser(currentUser);
+        clubDynamic.setClubId(clubObjId);
         clubDynamic.setContent(content);
         clubDynamic.setPicture(bmobFile);
         clubDynamic.setIdentity("暂未识别");

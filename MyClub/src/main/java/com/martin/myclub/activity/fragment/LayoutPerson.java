@@ -123,8 +123,9 @@ public class LayoutPerson extends Fragment implements View.OnClickListener {
             public void done(MyUser myUser, BmobException e) {
                 if (e == null){
                     //设置tab4的头像显示
-                    String avatar = myUser.getAvatar();
-                    identityImageView.getBigCircleImageView().setImageURI(Uri.parse(avatar));
+//                    String avatar = myUser.getAvatar();
+//
+// identityImageView.getBigCircleImageView().setImageURI(Uri.parse(avatar));
                     //设置tab4昵称
                     String name = myUser.getName();
                     userID.setText(name);

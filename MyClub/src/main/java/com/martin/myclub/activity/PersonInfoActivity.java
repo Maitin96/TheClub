@@ -206,8 +206,8 @@ public class PersonInfoActivity extends AppCompatActivity {
             public void done(MyUser myUser, BmobException e) {
                 if (e == null){
                     //从服务器获取头像信息
-                    String avatar = myUser.getAvatar();
-                    headPic.getBigCircleImageView().setImageURI(Uri.parse(avatar));
+//                    String avatar = myUser.getAvatar();
+//                    headPic.getBigCircleImageView().setImageURI(Uri.parse(avatar));
                     //从服务器获取昵称
                     String name = myUser.getName();
                     personName.setText(name);
@@ -222,7 +222,7 @@ public class PersonInfoActivity extends AppCompatActivity {
                     openHelper = new PersonInfoOpenHelper(PersonInfoActivity.this);
                     db = openHelper.getWritableDatabase();
                     values = new ContentValues();
-                    values.put("avatar",avatar);
+//                    values.put("avatar",avatar);
                     values.put("name",name);
                     values.put("sign",sign);
                     values.put("isMan",isMan);
@@ -491,7 +491,7 @@ public class PersonInfoActivity extends AppCompatActivity {
         String path = file.getAbsolutePath();
         BmobFile bmobFile = new BmobFile("avatar",null,path);
         String url = bmobFile.getUrl();
-        user.setAvatar(url);
+//        user.setAvatar(url);
         user.setName("小团");
         avatarForFragment = url;
         Log.e("TAG","路径"+ path + "Url" + url);

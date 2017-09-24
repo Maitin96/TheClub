@@ -43,11 +43,21 @@ public class AdapterClubDynamic extends RecyclerView.Adapter<AdapterClubDynamic.
     public void onBindViewHolder(AdapterClubDynamic.ViewHolder holder, int position) {
         //这个方法是赋予属性 这样理解 赋予给viewHolder 好放在item里
         ClubDynamic dynamic = list.get(position);
-        holder.userName.setText(dynamic.getUser().getName());
+        holder.userName.setText(dynamic.getUser().getUsername());
         holder.time.setText(dynamic.getCreatedAt());
         holder.content.setText(dynamic.getContent());
-        Glide.with(mContext).load(dynamic.getUser().getDp().getUrl()).into(holder.userDp);
-        Glide.with(mContext).load(dynamic.getPicture().getUrl()).into(holder.pic);
+        holder.lookedTime.setText("浏览" + dynamic.getLookedTime() + "次");
+        holder.good.setText(dynamic.getGood()+ "");
+        holder.comment.setText(dynamic.getComment()+ "");
+
+
+        if(dynamic.getUser().getDp() != null){   //设置用户头像
+            Glide.with(mContext).load(dynamic.getUser().getDp().getUrl()).into(holder.userDp);
+        }
+        if(dynamic.getPicture().getUrl() != null){  ///设置动态发表的图片
+            Glide.with(mContext).load(dynamic.getPicture().getUrl()).into(holder.pic);
+        }
+
     }
 
     @Override
@@ -69,12 +79,12 @@ public class AdapterClubDynamic extends RecyclerView.Adapter<AdapterClubDynamic.
         public ViewHolder(View itemView) {
             super(itemView);
             userDp = (ImageView) itemView.findViewById(R.id.dy_hp);
-            userName = (TextView) itemView.findViewById(R.id.dy_name);
+            userName = (TextView) itemView.findViewById(R.id.dy_username);
             time = (TextView) itemView.findViewById(R.id.dy_time);
             content = (TextView) itemView.findViewById(R.id.dy_content);
             pic = (ImageView) itemView.findViewById(R.id.iv_pic);
             lookedTime = (TextView) itemView.findViewById(R.id.tv_looked_time);
-            good = (TextView) itemView.findViewById(R.id.iv_good);
+            good = (TextView) itemView.findViewById(R.id.tv_good);
             comment = (TextView) itemView.findViewById(R.id.tv_comment);
         }
     }

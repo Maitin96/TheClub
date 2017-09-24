@@ -4,10 +4,10 @@ import cn.bmob.v3.BmobObject;
 
 /**
  * 评论bean
- * Created by Edward on 2017/7/23.
+ * Created by Edward on 2017/9/24
  */
 
-public class DynamicComment extends BmobObject{
+public class ClubDynamicComment extends BmobObject{
     private String dyObjId;
     private MyUser user;
     private String target_comm_username;

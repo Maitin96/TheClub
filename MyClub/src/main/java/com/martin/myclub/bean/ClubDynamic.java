@@ -1,7 +1,10 @@
 package com.martin.myclub.bean;
 
+import java.util.List;
+
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.datatype.BmobRelation;
 
 /**
  * 社团内部的动态
@@ -17,6 +20,11 @@ public class ClubDynamic extends BmobObject{
     private int lookedTime;
     private int good;
     private int comment;
+
+    private BmobRelation goods;
+    private List<MyUser> goods_users; // 赞了该贴的用户集合
+    private BmobRelation collects;
+    private List<MyUser> collect_users; // 收藏了该贴的用户集合
 
     public MyUser getUser() {
         return user;
@@ -80,5 +88,37 @@ public class ClubDynamic extends BmobObject{
 
     public void setComment(int comment) {
         this.comment = comment;
+    }
+
+    public BmobRelation getGoods() {
+        return goods;
+    }
+
+    public void setGoods(BmobRelation goods) {
+        this.goods = goods;
+    }
+
+    public List<MyUser> getGoods_users() {
+        return goods_users;
+    }
+
+    public void setGoods_users(List<MyUser> goods_users) {
+        this.goods_users = goods_users;
+    }
+
+    public BmobRelation getCollects() {
+        return collects;
+    }
+
+    public void setCollects(BmobRelation collects) {
+        this.collects = collects;
+    }
+
+    public List<MyUser> getCollect_users() {
+        return collect_users;
+    }
+
+    public void setCollect_users(List<MyUser> collect_users) {
+        this.collect_users = collect_users;
     }
 }

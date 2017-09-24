@@ -123,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
         MyUser user = new MyUser();
         user.setName("小团");
         user.setMan(true);
-        user.setAvatar(null);
+//        user.setAvatar(null);
         user.setSign("这个人很神秘，什么也有留下哦~");
         user.setUsername(phoneNumber.getText().toString());
         user.setPassword(pass.getText().toString());

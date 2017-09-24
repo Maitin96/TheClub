@@ -131,7 +131,7 @@ public class ClubManagerActivity extends AppCompatActivity{
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         requestData();
                     }
-                });
+                }).show();
     }
 
     private void showLoading(){

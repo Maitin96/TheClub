@@ -136,6 +136,7 @@ public class ClubActivity extends AppCompatActivity {
                     Intent intent = new Intent();
                     intent.setClass(ClubActivity.this,ClubWriteDynamicActivity.class);
                     intent.putExtra("isAdmin",true);
+                    intent.putExtra("clubObjId",clubObjId);
                     startActivity(intent);
                     dialog.dismiss();
                 }
@@ -162,6 +163,7 @@ public class ClubActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setClass(ClubActivity.this,ClubWriteDynamicActivity.class);
             intent.putExtra("isAdmin",false);
+            intent.putExtra("clubObjId",clubObjId);
             startActivity(intent);
         }
 
@@ -262,13 +264,7 @@ public class ClubActivity extends AppCompatActivity {
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         requestData();
                     }
-                });
-    }
-
-    public String getClubId(){
-        if(!TextUtils.isEmpty(clubObjId)){
-            return clubObjId;
-        }
-        return null;
+                })
+        .show();
     }
 }

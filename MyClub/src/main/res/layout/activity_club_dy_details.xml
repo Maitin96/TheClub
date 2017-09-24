@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="社团动态"
+            android:textColor="#000"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/iv_collect"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/collect_w" />
+    </RelativeLayout>
+
+
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/lRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <ProgressBar
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:text="正在加载..." />
+    </LinearLayout>
+</FrameLayout>
