@@ -268,7 +268,6 @@ public class ClubWriteDynamicActivity extends AppCompatActivity implements View.
             photoUtils.deleteDirWithFile(dirFile);  //删除掉目录重新创建
         dirFile.mkdirs();
 
-        //Todo
         String photoName = System.currentTimeMillis() + ".jpg";
         photoAlbumFile = new File(dirFile.getPath() + "/" + photoName);
         try{

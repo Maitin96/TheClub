@@ -91,7 +91,9 @@ public class ClubApplyActivity extends FragmentActivity implements ClubApplyInte
     @Override
     public void setPageByName(String name, int pageItem) {
         if (name.equals("finish")) {
-            startActivity(new Intent(ClubApplyActivity.this,ClubActivity.class));
+            Intent intent = new Intent(ClubApplyActivity.this, ClubActivity.class);
+            intent.putExtra("clubObjId",clubObjId);
+            startActivity(intent);
             finish();
         }
     }
@@ -252,17 +254,19 @@ public class ClubApplyActivity extends FragmentActivity implements ClubApplyInte
      * 添加进已加入的社团
      */
     private void setClub() {
+        MyUser myUser = new MyUser();
+        myUser.setObjectId(currentUser.getObjectId());
         BmobRelation r = new BmobRelation();
         r.add(mClubApply);
-        currentUser.setClub(r);
-        currentUser.update(currentUser.getObjectId(), new UpdateListener() {
+        myUser.setClub(r);
+        myUser.update(new UpdateListener() {
             @Override
             public void done(BmobException e) {
                 if(e == null){
-
+                    Log.e("ClubApplyActivity:", "当前用户添加社团成功");
                 }else{
                     setClub();
-                    Log.e("ClubApplyActivity:", "当前用户添加社团失败");
+                    Log.e("ClubApplyActivity:", "当前用户添加社团失败" + e.toString());
                 }
             }
         });

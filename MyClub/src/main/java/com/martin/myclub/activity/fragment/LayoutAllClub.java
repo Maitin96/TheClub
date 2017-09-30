@@ -41,6 +41,8 @@ import cn.bmob.v3.listener.FindListener;
  * 社团列表，所有社团
  */
 public class LayoutAllClub extends Fragment {
+    private String TAG = "LayoutAllClub";
+
     private static final int SHOW_CLUB = 1 << 1;
     private int REQUEST_COUNT = 0;
     private View rootView;
@@ -78,9 +80,14 @@ public class LayoutAllClub extends Fragment {
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getContext(), ClubActivity.class);
-                intent.putExtra("clubObjId",mClubLists.get(position).getObjectId());
-                startActivity(intent);
+                if(mClubLists != null){
+                    Intent intent = new Intent(getContext(), ClubActivity.class);
+                    intent.putExtra("clubObjId",mClubLists.get(position).getObjectId());
+                    startActivity(intent);
+                }else{
+                    Log.e(TAG, "mClubLists: 为空！");
+                }
+
             }
         });
 

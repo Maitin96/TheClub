@@ -26,6 +26,7 @@ public class ClubApply extends BmobObject{
     private String applicatQQ;  //  申请人的QQ
 
     private BmobRelation admin; //社团管理员
+    private BmobRelation member;  //社团成员
 
     public BmobRelation getAdmin() {
         return admin;
@@ -129,5 +130,13 @@ public class ClubApply extends BmobObject{
 
     public void setApplicatQQ(String applicatQQ) {
         this.applicatQQ = applicatQQ;
+    }
+
+    public BmobRelation getMember() {
+        return member;
+    }
+
+    public void setMember(BmobRelation member) {
+        this.member = member;
     }
 }

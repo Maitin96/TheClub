@@ -54,7 +54,7 @@ public class AdapterClubDynamic extends RecyclerView.Adapter<AdapterClubDynamic.
         if(dynamic.getUser().getDp() != null){   //设置用户头像
             Glide.with(mContext).load(dynamic.getUser().getDp().getUrl()).into(holder.userDp);
         }
-        if(dynamic.getPicture().getUrl() != null){  ///设置动态发表的图片
+        if(dynamic.getPicture() != null){  ///设置动态发表的图片
             Glide.with(mContext).load(dynamic.getPicture().getUrl()).into(holder.pic);
         }
 

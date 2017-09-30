@@ -35,7 +35,6 @@ public class PhotoUtils {
     private String path;
     private File dirFile;
     private File photoFile;
-    private File albumFile;
     public void openByType(int type){
         if(type == PHOTO){
             path = Environment.getExternalStorageDirectory().getPath();
@@ -72,8 +71,6 @@ public class PhotoUtils {
     public File getPhotoFile(int type){
         if(type == PHOTO){
             return photoFile;
-        }else if(type == ALBUM){
-            return albumFile;
         }
         return null;
     }
