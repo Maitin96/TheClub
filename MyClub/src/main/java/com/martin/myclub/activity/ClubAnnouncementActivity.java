@@ -19,6 +19,7 @@ import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.martin.myclub.R;
 import com.martin.myclub.adapter.AdapterClubActiveDetail;
+import com.martin.myclub.bean.CLubAnnouncement;
 import com.martin.myclub.bean.ClubSendActivity;
 import com.martin.myclub.bean.MyUser;
 import com.martin.myclub.util.Global;
@@ -35,16 +36,16 @@ import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 /**
- * 社团内部活动页面
+ * 社团内部通告页面
  * Created by Edward on 2017/9/26.
  */
 
-public class ClubActiveActivity extends AppCompatActivity implements View.OnClickListener{
+public class ClubAnnouncementActivity extends AppCompatActivity implements View.OnClickListener{
 
     private String TAG = "ClubActiveActivity";
 
     private MyUser currentUser;
-    private String activityId;
+    private String announcementId;
     private LinearLayout loading;
     private TextView title;
     private ImageView iv_return;
@@ -65,8 +66,8 @@ public class ClubActiveActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         currentUser = BmobUser.getCurrentUser(MyUser.class);
-        activityId = getIntent().getStringExtra("activityId");
-        setContentView(R.layout.activity_club_activity);
+        announcementId = getIntent().getStringExtra("announcementId");
+        setContentView(R.layout.activity_club_announcement);
         initView();
     }
 
@@ -126,15 +127,15 @@ public class ClubActiveActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void requestData() {
-        if(!TextUtils.isEmpty(activityId)){
-            BmobQuery<ClubSendActivity> query = new BmobQuery<>();
+        if(!TextUtils.isEmpty(announcementId)){
+            BmobQuery<CLubAnnouncement> query = new BmobQuery<>();
             query.include("user");
-            query.getObject(activityId, new QueryListener<ClubSendActivity>() {
+            query.getObject(announcementId, new QueryListener<CLubAnnouncement>() {
                 @Override
-                public void done(ClubSendActivity clubSendActivity, BmobException e) {
+                public void done(CLubAnnouncement cLubAnnouncement, BmobException e) {
                     if(e == null){
-                        setTitle(clubSendActivity.getTitle());
-                        setMainView(clubSendActivity);
+                        setTitle(cLubAnnouncement.getTitle());
+                        setMainView(cLubAnnouncement);
                         queryReadMember();
                     }else{
                         showRetryDialog();
@@ -142,7 +143,7 @@ public class ClubActiveActivity extends AppCompatActivity implements View.OnClic
                 }
             });
         }else{
-            Toast.makeText(this,"无法获取该活动的id",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"无法获取该活动的id,id为空",Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -153,9 +154,9 @@ public class ClubActiveActivity extends AppCompatActivity implements View.OnClic
     List<MyUser> memberList;
     private void queryReadMember() {
         BmobQuery<MyUser> query = new BmobQuery<>();
-        ClubSendActivity clubSendActivity = new ClubSendActivity();
-        clubSendActivity.setObjectId(activityId);
-        query.addWhereRelatedTo("member",new BmobPointer(clubSendActivity));
+        CLubAnnouncement c = new CLubAnnouncement();
+        c.setObjectId(announcementId);
+        query.addWhereRelatedTo("readedMember",new BmobPointer(c));
         query.findObjects(new FindListener<MyUser>() {
             @Override
             public void done(List<MyUser> list, BmobException e) {
@@ -181,14 +182,14 @@ public class ClubActiveActivity extends AppCompatActivity implements View.OnClic
         new Thread(){
             @Override
             public void run() {
-                ClubSendActivity bean = new ClubSendActivity();
-                bean.setObjectId(activityId);
+                CLubAnnouncement bean = new CLubAnnouncement();
+                bean.setObjectId(announcementId);
                 bean.setReadedCount(count);
                 bean.update(new UpdateListener() {
                     @Override
                     public void done(BmobException e) {
                         if(e == null){
-                            Log.d(TAG, "done: 更新阅读人数成功");
+                            Log.d(TAG, "done: 更新通告阅读人数成功");
                         }
                     }
                 });
@@ -205,22 +206,20 @@ public class ClubActiveActivity extends AppCompatActivity implements View.OnClic
 
     /**
      * 设置数据
-     * @param clubSendActivity
+     * @param cLubAnnouncement
      */
-    private void setMainView(ClubSendActivity clubSendActivity) {
-        MyUser user = clubSendActivity.getUser();
+    private void setMainView(CLubAnnouncement cLubAnnouncement) {
+        MyUser user = cLubAnnouncement.getUser();
         if(user.getDp() != null){
             Glide.with(this).load(user.getDp().getUrl()).into(iv_dp);
         }else{
             Glide.with(this).load(Global.defDpUrl).into(iv_dp);
         }
         tv_username.setText(user.getUsername());
-        tv_time.setText(clubSendActivity.getCreatedAt());
-        tv_start_time.setText(clubSendActivity.getStart_time());
-        tv_end_time.setText(clubSendActivity.getEnd_time());
-        tv_content.setText(clubSendActivity.getContent());
-        if(clubSendActivity.getPic() != null){
-            Glide.with(this).load(clubSendActivity.getPic().getUrl()).into(iv_pic);
+        tv_time.setText(cLubAnnouncement.getCreatedAt());
+        tv_content.setText(cLubAnnouncement.getContent());
+        if(cLubAnnouncement.getPic() != null){
+            Glide.with(this).load(cLubAnnouncement.getPic().getUrl()).into(iv_pic);
         }else{
             iv_pic.setImageDrawable(null);
             iv_pic.setVisibility(View.GONE);
@@ -255,11 +254,11 @@ public class ClubActiveActivity extends AppCompatActivity implements View.OnClic
      * 上传‘我’已读过
      */
     private void uploadRead() {
-        ClubSendActivity clubSendActivity = new ClubSendActivity();
-        clubSendActivity.setObjectId(activityId);
+        CLubAnnouncement clubSendActivity = new CLubAnnouncement();
+        clubSendActivity.setObjectId(announcementId);
         BmobRelation bmobRelation = new BmobRelation();
         bmobRelation.add(currentUser);
-        clubSendActivity.setMember(bmobRelation);
+        clubSendActivity.setReadedMember(bmobRelation);
         clubSendActivity.update(new UpdateListener() {
             @Override
             public void done(BmobException e) {
@@ -268,7 +267,7 @@ public class ClubActiveActivity extends AppCompatActivity implements View.OnClic
                     setDataToAdapter(memberList);
                     hintReadButton(true);
                 }else{
-                    Toast.makeText(ClubActiveActivity.this,"发送请求失败，请重试",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ClubAnnouncementActivity.this,"发送请求失败，请重试",Toast.LENGTH_SHORT).show();
                 }
             }
         });

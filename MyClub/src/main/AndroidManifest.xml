@@ -67,6 +67,7 @@
         <activity android:name=".activity.ClubDynamicDetailsActivity"/>
         <activity android:name=".activity.ClubActiveActivity"/>
         <activity android:name=".activity.MemberApplyActivity"/>
+        <activity android:name=".activity.ClubAnnouncementActivity"/>
 
     </application>
 

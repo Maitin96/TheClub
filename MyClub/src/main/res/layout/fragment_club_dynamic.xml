@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <include layout="@layout/layout_loading"/>
+    <include layout="@layout/layout_reload" android:visibility="gone"/>
 
     <com.github.jdsjlzx.recyclerview.LRecyclerView
         android:id="@+id/lRecyclerView"

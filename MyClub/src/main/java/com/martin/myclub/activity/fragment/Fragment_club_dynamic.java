@@ -1,5 +1,6 @@
 package com.martin.myclub.activity.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -65,17 +68,32 @@ public class Fragment_club_dynamic extends Fragment {
     private List<ClubDynamic> mClubDynamicList;
 
     private PreviewHandler mHandler = new PreviewHandler();
+    private LinearLayout loading;
+    private LinearLayout reload;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_club_dynamic, container, false);
+        Log.e("dynamic", "onCreateView: 被触发！" );
+        if (rootView != null) {
+            ViewGroup parent = (ViewGroup) rootView.getParent();
+            if (parent != null) {
+                parent.removeView(rootView);
+            }
+            initView();
+            return rootView;
+        }
+        rootView = inflater.inflate(R.layout.fragment_club_dynamic,
+                container, false);
         initView();
         return rootView;
     }
 
     private void initView() {
-        if (rootView != null) {
+            loading = (LinearLayout) rootView.findViewById(R.id.loading);
+            reload = (LinearLayout) rootView.findViewById(R.id.reload);
+            showLoadingView(true);
+            showRetryLayout(false);
             mLRecyclerView = (LRecyclerView) rootView.findViewById(R.id.lRecyclerView);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
             mLRecyclerView.setLayoutManager(layoutManager);
@@ -92,6 +110,14 @@ public class Fragment_club_dynamic extends Fragment {
                     requestData();
                 }
             });
+            reload.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showLoadingView(true);
+                    showreLoadView(false);
+                    requestData();
+                }
+            });
             recyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
@@ -103,19 +129,18 @@ public class Fragment_club_dynamic extends Fragment {
                         intent.putExtra("dynamicObjId", dynamicObjId);
                         startActivity(intent);
                     } else {
-                        showRetryDialog(true);
+                        Toast.makeText(getContext(),"请刷新重试下吧",Toast.LENGTH_SHORT).show();
                     }
                 }
             });
             requestData();
         }
-    }
 
     /**
      * 获取动态
      */
     private void requestData() {
-        Thread thread = new Thread(new Runnable() {
+        Thread thread = new Thread() {
             @Override
             public void run() {
                 String clubObjId = getActivity().getIntent().getStringExtra("clubObjId");
@@ -148,7 +173,7 @@ public class Fragment_club_dynamic extends Fragment {
                     }
                 });
             }
-        });
+        };
         thread.start();
     }
 
@@ -158,16 +183,21 @@ public class Fragment_club_dynamic extends Fragment {
             switch (msg.what){
                 case SET_DATA_TO_ADAPTER:
                     setDataToAdapter(mClubDynamicList);
-                    showRetryDialog(false);
+                    showLoadingView(false);
                     break;
                 case SHOW_RETRY:
-                    showRetryDialog(true);
+                    showLoadingView(false);
+                    showreLoadView(true);
                     break;
                 case FINISH_REFRESH:
                     finishRefresh();
                     break;
             }
         }
+    }
+
+    private void showRetryLayout(boolean show) {
+
     }
 
     /**
@@ -177,33 +207,23 @@ public class Fragment_club_dynamic extends Fragment {
      */
     private void setDataToAdapter(List<ClubDynamic> mClubDynamicList) {
         adapter.setData(mClubDynamicList);
-        adapter.notifyDataSetChanged();
+        recyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    private void showLoadingView(boolean show) {
+        if(show){
+            loading.setVisibility(View.VISIBLE);
+        }else{
+            loading.setVisibility(View.GONE);
+        }
     }
 
 
-    /**
-     * 加载失败重试提示
-     */
-    SweetAlertDialog mDialog;
-    private void showRetryDialog(boolean show) {
-        mDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
-        if (show) {
-            mDialog.setTitleText("异常");
-            mDialog.setContentText("加载出了点小问题,要重试一次吗？");
-            mDialog.setConfirmText("再试试");
-            mDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                @Override
-                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                    sweetAlertDialog.setTitleText("加载中");
-                    sweetAlertDialog.setContentText("小团正在努力为您加载哦~");
-                    sweetAlertDialog.setConfirmClickListener(null);
-                    sweetAlertDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
-                    requestData();
-                }
-            });
-            mDialog.show();
+    private void showreLoadView(boolean show) {
+        if(show){
+            reload.setVisibility(View.VISIBLE);
         }else{
-            mDialog.dismiss();
+            reload.setVisibility(View.GONE);
         }
     }
 

@@ -10,41 +10,42 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.martin.myclub.R;
-import com.martin.myclub.bean.ClubDynamic;
+import com.martin.myclub.bean.CLubAnnouncement;
 import com.martin.myclub.bean.ClubSendActivity;
 
 import java.util.List;
 
 /**
  * Created by Edward
- * 社团活动adapter
+ * 社团公告adapter
  */
-public class AdapterClubActivity extends RecyclerView.Adapter<AdapterClubActivity.ViewHolder> {
+public class AdapterClubAnnouncement extends RecyclerView.Adapter<AdapterClubAnnouncement.ViewHolder> {
 
-    private List<ClubSendActivity> list;
+    private List<CLubAnnouncement> list;
     private Context mContext;
 
-    public AdapterClubActivity(Context context){
+    public AdapterClubAnnouncement(Context context){
         mContext = context;
     }
 
-    public void setData(List<ClubSendActivity> list){
+    public void setData(List<CLubAnnouncement> list){
         this.list = list;
     }
 
     @Override
-    public AdapterClubActivity.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_club_activity,parent,false);//填充item到布局文件
+    public AdapterClubAnnouncement.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_club_announcement,parent,false);//填充item到布局文件
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(AdapterClubActivity.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterClubAnnouncement.ViewHolder holder, int position) {
         //这个方法是赋予属性 这样理解 赋予给viewHolder 好放在item里
-        ClubSendActivity a = list.get(position);
+        CLubAnnouncement a = list.get(position);
         holder.userName.setText(a.getUser().getUsername());
         holder.title.setText(a.getTitle());
+        holder.tv_content.setText(a.getContent());
         holder.time.setText(a.getCreatedAt());
         holder.readedCount.setText("已有 " +a.getReadedCount() + " 个成员已读");
 
@@ -73,6 +74,7 @@ public class AdapterClubActivity extends RecyclerView.Adapter<AdapterClubActivit
         private TextView title;
         private ImageView pic;
         private TextView readedCount;
+        private TextView tv_content;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -82,6 +84,7 @@ public class AdapterClubActivity extends RecyclerView.Adapter<AdapterClubActivit
             title = (TextView) itemView.findViewById(R.id.tv_title);
             pic = (ImageView) itemView.findViewById(R.id.iv_pic);
             readedCount = (TextView) itemView.findViewById(R.id.tv_read_time);
+            tv_content = (TextView) itemView.findViewById(R.id.tv_content);
         }
     }
 }

@@ -44,6 +44,7 @@ public class GuideActivity extends AppCompatActivity {
         //加载View到ViewList集合中
         final LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
 
+        // Todo  outofmemory!
         viewList = new ArrayList<>();
         viewList.add(inflater.inflate(R.layout.guide_page1,null));
         viewList.add(inflater.inflate(R.layout.guide_page2,null));

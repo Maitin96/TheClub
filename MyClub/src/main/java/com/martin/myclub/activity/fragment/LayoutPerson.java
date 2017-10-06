@@ -384,6 +384,7 @@ public class LayoutPerson extends Fragment implements View.OnClickListener {
         }
     }
 
+
     private void showPopupWindow(View view) {
         mPopwindow = new RewritePopwindow(getActivity(), itemsOnClick);
         mPopwindow.showAtLocation(view,

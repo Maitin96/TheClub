@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
@@ -65,6 +66,12 @@ public class Fragment_club_activity extends Fragment {
         mLRecyclerView.setAdapter(recyclerViewAdapter);
         mLRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mLRecyclerView.setLoadMoreEnabled(false);
+        mLRecyclerView.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestData();
+            }
+        });
         recyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -99,12 +106,20 @@ public class Fragment_club_activity extends Fragment {
                     showLoadingView(false);
                     activityList = list;
                     setMainView(list);
+                    finishRefresh();
                 }else{
                     requestData();
                     Log.e(TAG, "requestData: " + e.toString() );
                 }
             }
         });
+    }
+
+    /**
+     * 结束下拉刷新和上划加载
+     */
+    private void finishRefresh(){
+        mLRecyclerView.refreshComplete(1);
     }
 
     /**

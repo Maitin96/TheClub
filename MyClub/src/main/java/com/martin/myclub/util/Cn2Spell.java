@@ -65,7 +65,7 @@ public class Cn2Spell {
                 try {
                     sb.append(PinyinHelper.toHanyuPinyinStringArray(nameChar[i], defaultFormat)[0]);
                 } catch (Exception e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 }
             } else {
                 sb.append(nameChar[i]);

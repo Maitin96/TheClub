@@ -11,6 +11,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -97,7 +98,6 @@ public class ClubActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mViewPager.setOffscreenPageLimit(2);
 
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -348,6 +348,7 @@ public class ClubActivity extends AppCompatActivity {
     }
 
     private List<Fragment> setFragment(boolean isAdmin) {
+
         fragmentList.add(new Fragment_club_dynamic());
         fragmentList.add(new Fragment_club_activity());
         fragmentList.add(new Fragment_club_announcement());
@@ -365,6 +366,7 @@ public class ClubActivity extends AppCompatActivity {
     private void setViewPager(boolean isAdmin) {
         adapter = new AdapterClub(getSupportFragmentManager(), setFragment(isAdmin));
         mViewPager.setAdapter(adapter);
+        mViewPager.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(mViewPager);
 
         tabList.add(tabLayout.getTabAt(0));

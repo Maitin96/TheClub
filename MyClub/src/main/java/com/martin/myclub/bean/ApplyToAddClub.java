@@ -35,4 +35,8 @@ public class ApplyToAddClub extends BmobObject{
     public void setClubId(String clubId) {
         this.clubId = clubId;
     }
+
+    public void setObjectId(ApplyToAddClub applyToAddClub) {
+
+    }
 }
