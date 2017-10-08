@@ -43,6 +43,7 @@ public class ClubManagerActivity extends AppCompatActivity{
     private AdapterClubManager adapter;
     private MyUser currentUser;
     List<ClubApply> mClubList;
+    private TextView error;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +54,8 @@ public class ClubManagerActivity extends AppCompatActivity{
     }
 
     private void initView() {
+        error = (TextView) findViewById(R.id.error);
+
         ll_loading = (LinearLayout) findViewById(R.id.ll_loading);
         btn_apply_club = (Button) findViewById(R.id.btn_apply_club);
         iv_return = (ImageView) findViewById(R.id.iv_return);

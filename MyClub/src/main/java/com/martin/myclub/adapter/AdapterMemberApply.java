@@ -14,6 +14,7 @@ import com.martin.myclub.R;
 import com.martin.myclub.bean.ApplyToAddClub;
 import com.martin.myclub.bean.MyUser;
 import com.martin.myclub.util.Global;
+import com.martin.myclub.view.CircleImageView;
 
 import java.util.List;
 
@@ -57,13 +58,13 @@ public class AdapterMemberApply extends RecyclerView.Adapter<AdapterMemberApply.
 
     class BaseViewHolder extends RecyclerView.ViewHolder{
 
-        private ImageView ivHeadPic;
+        private CircleImageView ivHeadPic;
         private TextView tvUsername;
         private TextView tvSign;
 
         public BaseViewHolder(View itemView) {
             super(itemView);
-            ivHeadPic = (ImageView) itemView.findViewById(R.id.iv_hp);
+            ivHeadPic = (CircleImageView) itemView.findViewById(R.id.iv_hp);
             tvUsername = (TextView) itemView.findViewById(R.id.tv_item_username);
             tvSign = (TextView) itemView.findViewById(R.id.tv_item_sign);
         }

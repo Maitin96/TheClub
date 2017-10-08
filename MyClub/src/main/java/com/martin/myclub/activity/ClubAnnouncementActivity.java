@@ -1,5 +1,6 @@
 package com.martin.myclub.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import com.martin.myclub.bean.ClubSendActivity;
 import com.martin.myclub.bean.MyUser;
 import com.martin.myclub.util.Global;
 
+import java.io.Serializable;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -51,8 +53,6 @@ public class ClubAnnouncementActivity extends AppCompatActivity implements View.
     private ImageView iv_return;
     private ImageView iv_dp;
     private TextView tv_username;
-    private TextView tv_start_time;
-    private TextView tv_end_time;
     private TextView tv_content;
     private ImageView iv_pic;
     private LRecyclerView mLRecyclerView;
@@ -61,6 +61,7 @@ public class ClubAnnouncementActivity extends AppCompatActivity implements View.
     private Button btn_read;
     private LinearLayout ll_main_view;
     private TextView tv_time;
+    private TextView tv_look_member;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,14 +89,14 @@ public class ClubAnnouncementActivity extends AppCompatActivity implements View.
         iv_dp = (ImageView) findViewById(R.id.iv_dp);
         tv_username = (TextView) findViewById(R.id.tv_username);
         tv_time = (TextView) findViewById(R.id.tv_time);
-        tv_start_time = (TextView) findViewById(R.id.tv_start_time);
-        tv_end_time = (TextView) findViewById(R.id.tv_end_time);
         tv_content = (TextView) findViewById(R.id.tv_content);
         iv_pic = (ImageView) findViewById(R.id.iv_pic);
         btn_read = (Button) findViewById(R.id.btn_read);
+        tv_look_member = (TextView) findViewById(R.id.tv_look_member);  //查看已读成员
 
         iv_return.setOnClickListener(this);
         btn_read.setOnClickListener(this);
+        tv_look_member.setOnClickListener(this);
 
         mLRecyclerView = (LRecyclerView) findViewById(R.id.lRecyclerView);
         GridLayoutManager layoutManager = new GridLayoutManager(this,10);
@@ -107,13 +108,6 @@ public class ClubAnnouncementActivity extends AppCompatActivity implements View.
         mLRecyclerView.setAdapter(recyclerViewAdapter);
         mLRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mLRecyclerView.setPullRefreshEnabled(false);
-
-        mLRecyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Todo  点击进入已读成员名单  Activity
-            }
-        });
 
         requestData();
     }
@@ -247,7 +241,20 @@ public class ClubAnnouncementActivity extends AppCompatActivity implements View.
                 break;
             case R.id.btn_read:
                 uploadRead();
+                break;
+            case R.id.tv_look_member:
+                lookMember();
+                break;
         }
+    }
+
+    /**
+     * 查看已读成员
+     */
+    private void lookMember() {
+        Intent intent = new Intent(ClubAnnouncementActivity.this, AnnouncementLookMemberActivity.class);
+        intent.putExtra("memberList",(Serializable) memberList);
+        startActivity(intent);
     }
 
     /**

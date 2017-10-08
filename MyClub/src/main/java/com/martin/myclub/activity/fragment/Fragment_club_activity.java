@@ -43,11 +43,13 @@ public class Fragment_club_activity extends Fragment {
     private LRecyclerViewAdapter recyclerViewAdapter;
     private LinearLayout loading;
     private List<ClubSendActivity> activityList;
+    private String clubObjId;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_club_dynamic, container, false);
+        clubObjId = getActivity().getIntent().getStringExtra("clubObjId");
         initView();
         return rootView;
     }
@@ -99,6 +101,7 @@ public class Fragment_club_activity extends Fragment {
     private void requestData() {
         BmobQuery<ClubSendActivity> query = new BmobQuery<>();
         query.include("user");
+        query.addWhereEqualTo("clubId",clubObjId);
         query.findObjects(new FindListener<ClubSendActivity>() {
             @Override
             public void done(List<ClubSendActivity> list, BmobException e) {

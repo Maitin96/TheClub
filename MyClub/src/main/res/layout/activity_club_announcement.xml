@@ -68,7 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="活动内容："
+                        android:text="通告内容："
                         android:textSize="17sp" />
 
                     <TextView
@@ -89,6 +89,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
@@ -98,10 +99,18 @@
 
                     <com.github.jdsjlzx.recyclerview.LRecyclerView
                         android:id="@+id/lRecyclerView"
-                        android:layout_width="match_parent"
+                        android:layout_width="220dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
                         android:padding="10dp"/>
+                    <TextView
+                        android:id="@+id/tv_look_member"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="查看"
+                        android:layout_gravity="end"
+                        android:gravity="center"
+                        android:clickable="true"/>
                 </LinearLayout>
 
                 <Button

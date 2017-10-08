@@ -55,6 +55,7 @@ public class MemberApplyActivity extends AppCompatActivity implements View.OnCli
     private List<ApplyToAddClub> applyList;
     private TextView title;
     private LRecyclerView mLRecyclerView;
+    private TextView error;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +67,8 @@ public class MemberApplyActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initView() {
+        error = (TextView) findViewById(R.id.error);
+
         ll_loading = (LinearLayout) findViewById(R.id.loading);
         showLoadingView(true);
 
@@ -209,10 +212,22 @@ public class MemberApplyActivity extends AppCompatActivity implements View.OnCli
                     showLoadingView(false);
                     applyList = list;
                     setDataToAdapter();
+                    if(list.size() == 0 ){
+                        showError("暂无成员需要审核哦");
+                    }
                 }
                 finishRefresh();
             }
         });
+    }
+
+    /**
+     * ，没有
+     * @param content
+     */
+    private void showError(String content) {
+        error.setText(content);
+        error.setVisibility(View.VISIBLE);
     }
     private void setTitle(String title){
         this.title.setText(title);

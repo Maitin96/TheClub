@@ -23,6 +23,16 @@ public class MyUser extends BmobUser {
 
     private BmobRelation club;
 
+    private String realName;
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
     public BmobRelation getClub() {
         return club;
     }

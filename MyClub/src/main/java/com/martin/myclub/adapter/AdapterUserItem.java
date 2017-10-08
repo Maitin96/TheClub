@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.martin.myclub.R;
 import com.martin.myclub.activity.ChatActivity;
 import com.martin.myclub.bean.UserItemMsg;
+import com.martin.myclub.view.CircleImageView;
 
 import java.util.List;
 
@@ -48,13 +49,13 @@ public class AdapterUserItem extends RecyclerView.Adapter<AdapterUserItem.BaseVi
 
     class BaseViewHolder extends RecyclerView.ViewHolder{
 
-        private ImageView ivHeadPic;
+        private CircleImageView ivHeadPic;
         private TextView tvUsername;
         private TextView tvSign;
 
         public BaseViewHolder(View itemView) {
             super(itemView);
-            ivHeadPic = (ImageView) itemView.findViewById(R.id.iv_hp);
+            ivHeadPic = (CircleImageView) itemView.findViewById(R.id.iv_hp);
             tvUsername = (TextView) itemView.findViewById(R.id.tv_item_username);
             tvSign = (TextView) itemView.findViewById(R.id.tv_item_sign);
 
