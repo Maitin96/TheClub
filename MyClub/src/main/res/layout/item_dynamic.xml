@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/dy_hp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/avasterwe" />
 
         <LinearLayout
@@ -29,12 +29,13 @@
                 android:layout_height="wrap_content"
                 android:text="Lucy"
                 android:textColor="#000"
-                android:textSize="18sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/dy_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="10dp"
                 android:layout_marginTop="7dp"
                 android:text="今天10:36" />
         </LinearLayout>
@@ -42,22 +43,24 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="看过来看过来"
+        android:gravity="center"
+        android:textColor="#272727"
+        android:textSize="20dp"/>
+    <TextView
         android:id="@+id/dy_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_marginTop="25dp"
+        android:padding="5dp"
+        android:singleLine="true"
         android:text="可能这就是人生的意义吧。"
-        android:textColor="#000"
-        android:textSize="20dp" />
-
-    <ImageView
-        android:id="@+id/dy_content_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/good" />
+        android:textColor="#605f5f"
+        android:textSize="16dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -131,17 +134,4 @@
         android:layout_margin="5dp"
         android:layout_marginTop="5dp"
         android:background="#9e9e9e" />
-
-    <TextView
-        android:id="@+id/tv_person_like"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text=""
-        android:textColor="#2828ff" />
-
-    <View
-        android:id="@+id/shadow"
-        android:layout_width="match_parent"
-        android:layout_height="20dp" />
 </LinearLayout>

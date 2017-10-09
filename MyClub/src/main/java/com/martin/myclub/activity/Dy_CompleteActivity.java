@@ -2,6 +2,8 @@ package com.martin.myclub.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -34,6 +37,7 @@ import com.martin.myclub.bean.DynamicMsg;
 import com.martin.myclub.bean.MyUser;
 import com.martin.myclub.util.UIUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -80,6 +84,7 @@ public class Dy_CompleteActivity extends AppCompatActivity implements View.OnCli
     private TextView dy__name;  // 名字
     private TextView dy_time;
     private TextView dy_content;
+    private TextView dy_title;
 
     private TextView tv_looked_time;
     private TextView tv_likes;
@@ -146,6 +151,7 @@ public class Dy_CompleteActivity extends AppCompatActivity implements View.OnCli
         tv_send = (TextView) header.findViewById(R.id.tv_send);
         dy__name = (TextView) header.findViewById(R.id.dy__name);
         dy_time = (TextView) header.findViewById(R.id.dy_time);
+        dy_title = (TextView) header.findViewById(R.id.dy_title);
         dy_content = (TextView) header.findViewById(R.id.dy_content);
         dy_content_image = (ImageView) header.findViewById(R.id.dy_content_image);
         tv_looked_time = (TextView) header.findViewById(R.id.tv_looked_time);
@@ -373,6 +379,13 @@ public class Dy_CompleteActivity extends AppCompatActivity implements View.OnCli
         ll_dy.setVisibility(View.VISIBLE);
         dy__name.setText(dynamicMsg.getUser().getUsername());
         dy_time.setText(dynamicMsg.getCreatedAt());
+        if(dynamicMsg.getPicture() != null){
+            Glide.with(this).load(dynamicMsg.getPicture().getUrl()).into(dy_content_image);
+        }else{
+            dy_content_image.setImageDrawable(null);
+            dy_content_image.setVisibility(View.GONE);
+        }
+        dy_title.setText(dynamicMsg.getTitle());
         dy_content.setText(dynamicMsg.getContent());
         tv_likes.setText(dynamicMsg.getLike_counts() + "");
         //   Edward觉得很赞!

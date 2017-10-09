@@ -48,7 +48,6 @@ public class MyPostActivity extends AppCompatActivity {
         Date date = new Date(currentTime);
 
         dynamicMsg.setTime(formatter.format(date));
-        dynamicMsg.setPicture(R.drawable.good);
         dynamicMsgList.add(dynamicMsg);
 
 

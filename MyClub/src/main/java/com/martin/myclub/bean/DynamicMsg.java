@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import java.util.List;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobRelation;
 
 /**
@@ -16,11 +17,20 @@ public class DynamicMsg extends BmobObject {
     private MyUser user;
     private String time;
     private String content;
+    private String title;
 
-    private int picture;
+    private BmobFile picture;
     private int look_times = 0;  //浏览次数
     private int comment_counts = 0; //评论数
     private int like_counts = 0;  //点赞数
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public int getLike_counts() {
         return like_counts;
@@ -109,11 +119,11 @@ public class DynamicMsg extends BmobObject {
         this.content = content;
     }
 
-    public int getPicture() {
+    public BmobFile getPicture() {
         return picture;
     }
 
-    public void setPicture(int picture) {
+    public void setPicture(BmobFile picture) {
         this.picture = picture;
     }
 }

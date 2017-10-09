@@ -51,7 +51,6 @@ public class LayoutFocus extends Fragment {
             Date date = new Date(currentTime);
 
             dynamicMsg.setTime(""+formatter.format(date));
-            dynamicMsg.setPicture(R.drawable.good);
             dynamicMsgList.add(dynamicMsg);
 
             adapterDynamicItem = new AdapterDynamicItem(getContext());

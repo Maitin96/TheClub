@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.martin.myclub.R;
 import com.martin.myclub.bean.ClubDynamicComment;
 import com.martin.myclub.bean.DynamicComment;
+import com.martin.myclub.util.Global;
 import com.martin.myclub.util.UIUtils;
 
 import java.util.List;
@@ -44,6 +46,11 @@ public class AdapterClubDyComp extends RecyclerView.Adapter<AdapterClubDyComp.Ho
         ClubDynamicComment comment = commentList.get(position);
         if(TextUtils.isEmpty(comment.getTarget_comm_id())){
             holder.tv_username.setText(comment.getUser().getUsername());
+            if(comment.getUser().getDp() != null){
+                Glide.with(context).load(comment.getUser().getDp().getUrl()).into(holder.iv_dp);
+            }else{
+                Glide.with(context).load(Global.defDpUrl).into(holder.iv_dp);
+            }
             holder.tv_user_comment.setText(comment.getComment());
         }else{
             String head = "      " + comment.getUser().getUsername() + " --> " + comment.getTarget_comm_username();
@@ -62,13 +69,13 @@ public class AdapterClubDyComp extends RecyclerView.Adapter<AdapterClubDyComp.Ho
 
     class Holder extends RecyclerView.ViewHolder{
 
-        private ImageView iv_head; //用户头像
+        private ImageView iv_dp; //用户头像
         private TextView tv_username; //用户名
         private TextView tv_user_comment; //用户评论
 
         public Holder(View itemView) {
             super(itemView);
-            iv_head = (ImageView) itemView.findViewById(R.id.iv_head);
+            iv_dp = (ImageView) itemView.findViewById(R.id.iv_dp);
             tv_username = (TextView) itemView.findViewById(R.id.tv_username);
             tv_user_comment = (TextView) itemView.findViewById(R.id.tv_user_comment);
         }

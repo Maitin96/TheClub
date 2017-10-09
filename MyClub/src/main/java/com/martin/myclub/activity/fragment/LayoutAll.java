@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
@@ -45,6 +47,8 @@ import cn.bmob.v3.listener.FindListener;
  */
 public class LayoutAll extends Fragment {
 
+    private String TAG = "LayoutAll";
+
     private static final int IS_REFRESH = 1 << 3;
     private static final int IS_LOAD_MORE = 1 << 2;
     /**服务器端一共多少条数据  默认100*/
@@ -73,6 +77,8 @@ public class LayoutAll extends Fragment {
     private LRecyclerView dynamicRecyclerView;
     private AdapterDynamicItem adapterDynamicItem;
     private LRecyclerViewAdapter lRecyclerViewAdapter;
+    private LinearLayout loading;
+    private TextView error;
 
     @Nullable
     @Override
@@ -83,6 +89,10 @@ public class LayoutAll extends Fragment {
     }
 
     private void initViews(){
+        loading = (LinearLayout) rootView.findViewById(R.id.loading);
+        showLoadingView(true);
+
+        error = (TextView) rootView.findViewById(R.id.error);
 
         dynamicRecyclerView = (LRecyclerView) rootView.findViewById(R.id.rv_list_moments);
         //  RecyclerView的适配器
@@ -134,6 +144,17 @@ public class LayoutAll extends Fragment {
                 startActivity(intent);
             }
         });
+
+        flag = IS_REFRESH;
+        requestData();
+    }
+
+    private void showLoadingView(boolean show) {
+        if(show){
+            loading.setVisibility(View.VISIBLE);
+        }else{
+            loading.setVisibility(View.GONE);
+        }
     }
 
     /**获取网络数据*/
@@ -184,6 +205,8 @@ public class LayoutAll extends Fragment {
                                     @Override
                                     public void done(List<DynamicMsg> list, BmobException e) {
                                         if(e == null){
+                                            showLoadingView(false);
+
                                             if(flag == IS_REFRESH){
                                                 dynamicMsgList.clear();
                                                 mCurrentCounter = 0;
@@ -199,6 +222,8 @@ public class LayoutAll extends Fragment {
                                             msg.what = NOTIFY;
                                             mHandler.sendMessage(msg);
                                         }else{
+                                            showError("页面加载失败");
+                                            Log.e(TAG, "done: " + e.toString());
                                             Toast.makeText(getContext(),"数据请求异常!",Toast.LENGTH_SHORT).show();
                                             Message msg = Message.obtain();
                                             msg.what = FINISH_REFRESH;
@@ -220,6 +245,11 @@ public class LayoutAll extends Fragment {
                 }
             }
         }.start();
+    }
+
+    private void showError(String content) {
+        error.setText(content);
+        error.setVisibility(View.VISIBLE);
     }
 
     /**
