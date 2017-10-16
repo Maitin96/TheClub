@@ -8,6 +8,7 @@
     android:layout_height="match_parent">
 
     <include layout="@layout/layout_loading"/>
+    <include layout="@layout/error"/>
 
 <android.support.design.widget.CoordinatorLayout
     android:id="@+id/coordinatorLayout"
