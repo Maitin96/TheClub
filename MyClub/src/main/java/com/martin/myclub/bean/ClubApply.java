@@ -14,6 +14,7 @@ public class ClubApply extends BmobObject{
     private String name;   //社团名称
     private String introduction;  //社团简介
     private BmobFile logo; // 社团logo
+    private BmobFile bg;  //社团封面背景
 
     private String phone;   //社团联系电话
     private String Email;  //社团邮箱
@@ -42,6 +43,14 @@ public class ClubApply extends BmobObject{
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
+    }
+
+    public BmobFile getBg() {
+        return bg;
+    }
+
+    public void setBg(BmobFile bg) {
+        this.bg = bg;
     }
 
     public BmobFile getLogo() {

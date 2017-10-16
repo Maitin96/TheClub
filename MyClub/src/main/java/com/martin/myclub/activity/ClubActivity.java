@@ -1,9 +1,14 @@
 package com.martin.myclub.activity;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -20,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,13 +39,18 @@ import com.martin.myclub.adapter.AdapterClub;
 import com.martin.myclub.bean.ApplyToAddClub;
 import com.martin.myclub.bean.ClubApply;
 import com.martin.myclub.bean.MyUser;
+import com.martin.myclub.util.PhotoUtils;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.exception.BmobException;
@@ -47,6 +58,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.UploadFileListener;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -75,6 +87,8 @@ public class ClubActivity extends AppCompatActivity {
     private int admin = 2 << 2;
     private int member = 2 << 3;
     private int visitor = 2 << 4;
+    private TextView error;
+    private ImageView iv_club_bg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +101,9 @@ public class ClubActivity extends AppCompatActivity {
     }
 
     private void initView() {
+
+        error = (TextView) findViewById(R.id.error);
+        iv_club_bg = (ImageView) findViewById(R.id.iv_club_bg);
 
         loadingLayout = (LinearLayout) findViewById(R.id.loading);
         barLayout = (AppBarLayout) findViewById(R.id.bar_layout);
@@ -108,25 +125,58 @@ public class ClubActivity extends AppCompatActivity {
             }
         });
 
+        // 社长有权修改背景
+        iv_club_bg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(type == admin){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ClubActivity.this);
+                    final AlertDialog dialog = builder.create();
+                    View view = View.inflate(ClubActivity.this, R.layout.dialog_change_background, null);
+                    TextView tv_change_bg = (TextView) view.findViewById(R.id.change_bg);
+                    tv_change_bg.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            openAlbum();
+                        }
+                    });
+                    TextView cancel = (TextView) view.findViewById(R.id.cancel);
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.setView(view);
+                    dialog.show();
+                }
+            }
+        });
+
         requestData();
     }
 
     private void requestData() {
         showMainInterface(false);
 
-        BmobQuery<ClubApply> query = new BmobQuery<>();
-        query.getObject(clubObjId, new QueryListener<ClubApply>() {
-            @Override
-            public void done(ClubApply clubApply, BmobException e) {
-                if (e == null) {
-                    setUIContent(clubApply);
-                    queryIdentity();
-                } else {
-                    Log.e("ClubActivity:", "requestData: " + e.toString());
-                    showRetryDialog();
+        try{
+            BmobQuery<ClubApply> query = new BmobQuery<>();
+            query.getObject(clubObjId, new QueryListener<ClubApply>() {
+                @Override
+                public void done(ClubApply clubApply, BmobException e) {
+                    if (e == null) {
+                        setUIContent(clubApply);
+                        queryIdentity();
+                    } else {
+                        Log.e("ClubActivity:", "requestData: " + e.toString());
+                        showError("页面加载失败");
+                    }
                 }
-            }
-        });
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -134,6 +184,7 @@ public class ClubActivity extends AppCompatActivity {
      */
     private void showPlusDialog(int type) {
         if (type == admin) {
+
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             final AlertDialog dialog = builder.create();
             View view = View.inflate(this, R.layout.dialog_plus_admin, null);
@@ -330,6 +381,111 @@ public class ClubActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PhotoUtils.ALBUM && resultCode == RESULT_OK) {
+            if (data != null) {
+                Uri uri = data.getData();
+                ContentResolver cr = this.getContentResolver();
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+                    saveAlbumAsFile(bitmap);
+                    if (photoAlbumFile != null) {
+                        Log.e("图片文件存在！！", "onActivityResult: ");
+                        setBitmapOpts(iv_club_bg, photoAlbumFile);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * 打开相册
+     */
+    PhotoUtils utils;
+
+    private void openAlbum() {
+        utils = new PhotoUtils(this);
+        utils.openByType(PhotoUtils.ALBUM);
+    }
+
+
+    File photoAlbumFile;
+
+    private void saveAlbumAsFile(Bitmap bitmap) {
+        String path = Environment.getExternalStorageDirectory().getPath();
+        File dirFile = new File(path + "/clubWriteDynamic/");
+        if (dirFile.exists())
+            utils.deleteDirWithFile(dirFile);  //删除掉目录重新创建
+        dirFile.mkdirs();
+
+        String photoName = System.currentTimeMillis() + ".jpg";
+        photoAlbumFile = new File(dirFile.getPath() + "/" + photoName);
+        try {
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(photoAlbumFile));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+            bos.flush();
+            bos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setBitmapOpts(ImageView imageView, File photoFile) {
+        int width = imageView.getWidth();
+        int height = imageView.getHeight();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(photoFile.getPath(), options);
+        int imageWidth = options.outWidth;
+        int imageHeight = options.outHeight;
+
+        int scaleFactor = Math.min(imageWidth / width, imageHeight
+                / height);
+
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = scaleFactor;
+        options.inPurgeable = true;
+        Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getPath(),
+                options);
+        imageView.setImageBitmap(bitmap);
+
+        uploadBg();
+    }
+
+    /**
+     * 上传社团的封面背景
+     */
+    private void uploadBg() {
+
+        final BmobFile bmobFile = new BmobFile(photoAlbumFile);
+        bmobFile.upload(new UploadFileListener() {
+            @Override
+            public void done(BmobException e) {
+                if(e == null){
+                    ClubApply clubApply = new ClubApply();
+                    clubApply.setObjectId(clubObjId);
+                    clubApply.setBg(bmobFile);
+                    clubApply.update(new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if( e== null){
+                                Toast.makeText(ClubActivity.this,"封面上传成功",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        ClubApply clubApply = new ClubApply();
+        clubApply.setObjectId(clubObjId);
+
+    }
+
     /**
      * 是否显示主界面
      *
@@ -354,6 +510,8 @@ public class ClubActivity extends AppCompatActivity {
         fragmentList.add(new Fragment_club_announcement());
         if (isAdmin) {
             fragmentList.add(new Fragment_club_management());
+        }else{
+            fragmentList.add(new Fragment_club_management());
         }
         return fragmentList;
     }
@@ -367,6 +525,7 @@ public class ClubActivity extends AppCompatActivity {
         adapter = new AdapterClub(getSupportFragmentManager(), setFragment(isAdmin));
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setCurrentItem(0);
         tabLayout.setupWithViewPager(mViewPager);
 
         tabList.add(tabLayout.getTabAt(0));
@@ -378,6 +537,9 @@ public class ClubActivity extends AppCompatActivity {
         if (isAdmin) {
             tabList.add(tabLayout.getTabAt(3));
             tabList.get(3).setText("管理");
+        }else{
+            tabList.add(tabLayout.getTabAt(3));
+            tabList.get(3).setText("其他");
         }
     }
 
@@ -428,5 +590,10 @@ public class ClubActivity extends AppCompatActivity {
         }else{
             mSuccessDialog.dismiss();
         }
+    }
+
+    private void showError(String content) {
+        error.setText(content);
+        error.setVisibility(View.VISIBLE);
     }
 }
