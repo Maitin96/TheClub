@@ -5,7 +5,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/guide3"
+        android:src="@drawable/shot3"
         android:scaleType="centerCrop"/>
     <Button
         android:id="@+id/btn_to_main"
