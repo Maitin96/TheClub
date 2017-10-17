@@ -169,16 +169,6 @@ public class MemberApplyActivity extends AppCompatActivity implements View.OnCli
             btn_no.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    applyList.remove(position);
-                    setDataToAdapter();
-                    dialog.dismiss();
-                }
-            });
-
-            btn_think.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //不同意后删掉申请信息
                     ApplyToAddClub a = new ApplyToAddClub();
                     a.setObjectId(applyList.get(position).getObjectId());
                     a.delete(new UpdateListener() {
@@ -188,12 +178,20 @@ public class MemberApplyActivity extends AppCompatActivity implements View.OnCli
                                 applyList.remove(position);
                                 setDataToAdapter();
                                 Toast.makeText(MemberApplyActivity.this,"您没有同意 "+ user.getUsername() +" 加入您的社团",Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
                             }else{
                                 Toast.makeText(MemberApplyActivity.this,"网络异常,请重试",Toast.LENGTH_SHORT).show();
                             }
+                            dialog.dismiss();
                         }
                     });
+
+                }
+            });
+
+            btn_think.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
                 }
             });
         }

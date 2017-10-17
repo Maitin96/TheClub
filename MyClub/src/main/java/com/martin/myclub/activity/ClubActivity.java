@@ -30,11 +30,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.martin.myclub.R;
 import com.martin.myclub.activity.fragment.Fragment_club_activity;
 import com.martin.myclub.activity.fragment.Fragment_club_announcement;
 import com.martin.myclub.activity.fragment.Fragment_club_dynamic;
 import com.martin.myclub.activity.fragment.Fragment_club_management;
+import com.martin.myclub.activity.fragment.Fragment_club_others;
 import com.martin.myclub.adapter.AdapterClub;
 import com.martin.myclub.bean.ApplyToAddClub;
 import com.martin.myclub.bean.ClubApply;
@@ -114,7 +116,7 @@ public class ClubActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
 
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +140,7 @@ public class ClubActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             openAlbum();
+                            dialog.dismiss();
                         }
                     });
                     TextView cancel = (TextView) view.findViewById(R.id.cancel);
@@ -157,7 +160,7 @@ public class ClubActivity extends AppCompatActivity {
     }
 
     private void requestData() {
-        showMainInterface(false);
+//        showMainInterface(false);
 
         try{
             BmobQuery<ClubApply> query = new BmobQuery<>();
@@ -327,6 +330,9 @@ public class ClubActivity extends AppCompatActivity {
      */
     private void setUIContent(ClubApply club) {
         collapsing_toolbar.setTitle(club.getName());
+        if(club.getBg() != null){
+            Glide.with(getApplicationContext()).load(club.getBg().getUrl()).into(iv_club_bg);
+        }
     }
 
     /**
@@ -344,15 +350,14 @@ public class ClubActivity extends AppCompatActivity {
                     //管理员检测
                     for (MyUser user : list) {
                         if (currentUser.getObjectId().equals(user.getObjectId())) {
-                            // Todo ViewPager多一项管理tab
                             setViewPager(true);
                             type = admin;
                             showMainInterface(true);
                             return;
                         }
                     }
-                    // 社团成员检测
                     setViewPager(false);
+                    // 社团成员检测
                     BmobQuery<MyUser> query = new BmobQuery<>();
                     ClubApply club = new ClubApply();
                     club.setObjectId(clubObjId);
@@ -505,13 +510,16 @@ public class ClubActivity extends AppCompatActivity {
 
     private List<Fragment> setFragment(boolean isAdmin) {
 
-        fragmentList.add(new Fragment_club_dynamic());
-        fragmentList.add(new Fragment_club_activity());
-        fragmentList.add(new Fragment_club_announcement());
+        Fragment_club_dynamic fragment_club_dynamic = new Fragment_club_dynamic();
+        Fragment_club_activity fragment_club_activity = new Fragment_club_activity();
+        Fragment_club_announcement fragment_club_announcement = new Fragment_club_announcement();
+        fragmentList.add(fragment_club_dynamic);
+        fragmentList.add(fragment_club_activity);
+        fragmentList.add(fragment_club_announcement);
         if (isAdmin) {
             fragmentList.add(new Fragment_club_management());
         }else{
-            fragmentList.add(new Fragment_club_management());
+            fragmentList.add(new Fragment_club_others());
         }
         return fragmentList;
     }
@@ -522,11 +530,12 @@ public class ClubActivity extends AppCompatActivity {
      * @param isAdmin
      */
     private void setViewPager(boolean isAdmin) {
+        Log.d(TAG, "setViewPager: 管理员验证：" + isAdmin);
         adapter = new AdapterClub(getSupportFragmentManager(), setFragment(isAdmin));
         mViewPager.setAdapter(adapter);
-        mViewPager.setOffscreenPageLimit(2);
-        mViewPager.setCurrentItem(0);
+        mViewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
         tabList.add(tabLayout.getTabAt(0));
         tabList.add(tabLayout.getTabAt(1));
@@ -596,4 +605,5 @@ public class ClubActivity extends AppCompatActivity {
         error.setText(content);
         error.setVisibility(View.VISIBLE);
     }
+
 }

@@ -48,10 +48,20 @@ public class Fragment_club_activity extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_club_dynamic, container, false);
         clubObjId = getActivity().getIntent().getStringExtra("clubObjId");
+        if (rootView != null) {
+            ViewGroup parent = (ViewGroup) rootView.getParent();
+            if (parent != null) {
+                parent.removeView(rootView);
+            }
+            initView();
+            return rootView;
+        }
+        rootView = inflater.inflate(R.layout.fragment_club_dynamic,
+                container, false);
         initView();
         return rootView;
+
     }
 
     private void initView() {
@@ -63,7 +73,7 @@ public class Fragment_club_activity extends Fragment {
         mLRecyclerView.setLayoutManager(layoutManager);
         mLRecyclerView.setRefreshProgressStyle(ProgressStyle.Pacman);
         mLRecyclerView.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
-        adapter = new AdapterClubActivity(getContext());
+        adapter = new AdapterClubActivity(getActivity());
         recyclerViewAdapter = new LRecyclerViewAdapter(adapter);
         mLRecyclerView.setAdapter(recyclerViewAdapter);
         mLRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);

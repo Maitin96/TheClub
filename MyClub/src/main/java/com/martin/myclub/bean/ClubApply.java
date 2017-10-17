@@ -1,5 +1,9 @@
 package com.martin.myclub.bean;
 
+import android.support.annotation.NonNull;
+
+import com.martin.myclub.util.Cn2Spell;
+
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobRelation;
@@ -9,7 +13,13 @@ import cn.bmob.v3.datatype.BmobRelation;
  * Created by Edward on 2017/8/15.
  */
 
-public class ClubApply extends BmobObject{
+public class ClubApply extends BmobObject implements Comparable<ClubApply>{
+
+    private String pinyin; // 姓名对应的拼音
+    private String firstLetter; // 拼音的首字母
+
+
+
     private MyUser user;
     private String name;   //社团名称
     private String introduction;  //社团简介
@@ -147,5 +157,34 @@ public class ClubApply extends BmobObject{
 
     public void setMember(BmobRelation member) {
         this.member = member;
+    }
+
+
+
+    public String getPinyin() {
+        return pinyin;
+    }
+
+    public String getFirstLetter() {
+        return firstLetter;
+    }
+
+    public void exec(){
+        pinyin = Cn2Spell.getPinYin(name); // 根据姓名获取拼音
+        firstLetter = pinyin.substring(0, 1).toUpperCase(); // 获取拼音首字母并转成大写
+        if (!firstLetter.matches("[A-Z]")) { // 如果不在A-Z中则默认为“#”
+            firstLetter = "#";
+        }
+    }
+
+    @Override
+    public int compareTo(@NonNull ClubApply club) {
+        if (firstLetter.equals("#") && !club.getFirstLetter().equals("#")) {
+            return 1;
+        } else if (!firstLetter.equals("#") && club.getFirstLetter().equals("#")){
+            return -1;
+        } else {
+            return pinyin.compareToIgnoreCase(club.getPinyin());
+        }
     }
 }

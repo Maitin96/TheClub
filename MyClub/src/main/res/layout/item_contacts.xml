@@ -21,10 +21,10 @@
         android:orientation="horizontal"
         android:padding="10dp">
 
-        <com.martin.myclub.view.IdentityImageView
-            android:id="@+id/iiv_contacts"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+        <com.martin.myclub.view.CircleImageView
+            android:id="@+id/iv_club_logo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             app:iciv_hint_smallimageview="true"
             app:iciv_bigimage="@drawable/head_pic"
             app:iciv_isprogress="true"

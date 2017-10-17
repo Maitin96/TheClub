@@ -69,6 +69,8 @@
         <activity android:name=".activity.MemberApplyActivity"/>
         <activity android:name=".activity.ClubAnnouncementActivity"/>
         <activity android:name=".activity.AnnouncementLookMemberActivity"/>
+        <activity android:name=".activity.ClubChangeBaseMsg"/>
+        <activity android:name=".activity.ClubMemberActivity"/>
 
 
     </application>

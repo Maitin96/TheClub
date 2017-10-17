@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.martin.myclub.R;
+import com.martin.myclub.activity.ClubChangeBaseMsg;
 import com.martin.myclub.activity.MemberApplyActivity;
 import com.martin.myclub.bean.MyUser;
 
@@ -54,7 +55,9 @@ public class Fragment_club_management extends Fragment {
         ll_basic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getContext(), ClubChangeBaseMsg.class);
+                intent.putExtra("clubObjId",clubObjId);
+                startActivity(intent);
             }
         });
     }

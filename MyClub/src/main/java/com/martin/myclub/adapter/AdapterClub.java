@@ -3,6 +3,7 @@ package com.martin.myclub.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 
@@ -19,6 +20,7 @@ public class AdapterClub extends FragmentPagerAdapter {
 
     public AdapterClub(FragmentManager fm, List<Fragment> fragmentList) {
         super(fm);
+
         this.fragmentList = fragmentList;
     }
 
@@ -31,7 +33,7 @@ public class AdapterClub extends FragmentPagerAdapter {
     @Override
     public Object instantiateItem(View container, int position) {
         Fragment fragment = fragmentList.get(position);
-        fragment.notify();
+        fragment.notifyAll();
         return fragment;
     }
 
@@ -39,6 +41,11 @@ public class AdapterClub extends FragmentPagerAdapter {
     public int getItemPosition(Object object) {
         return PagerAdapter.POSITION_NONE;
     }
+
+//    @Override
+//    public int getItemPosition(Object object) {
+//        return PagerAdapter.POSITION_UNCHANGED;
+//    }
 
     @Override
     public int getCount() {

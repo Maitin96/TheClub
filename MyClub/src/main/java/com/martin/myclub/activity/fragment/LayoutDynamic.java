@@ -66,6 +66,6 @@ public class LayoutDynamic extends Fragment {
         tabList.add(tabLayout.getTabAt(1));
 
         tabList.get(0).setText("推荐");
-        tabList.get(1).setText("我的关注");
+        tabList.get(1).setText("社团列表");
     }
 }

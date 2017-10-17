@@ -99,7 +99,7 @@ public class Fragment_club_dynamic extends Fragment {
             mLRecyclerView.setLayoutManager(layoutManager);
             mLRecyclerView.setRefreshProgressStyle(ProgressStyle.Pacman);
             mLRecyclerView.setArrowImageView(R.drawable.ic_pulltorefresh_arrow);
-            adapter = new AdapterClubDynamic(getContext());
+            adapter = new AdapterClubDynamic(getActivity());
             recyclerViewAdapter = new LRecyclerViewAdapter(adapter);
             mLRecyclerView.setAdapter(recyclerViewAdapter);
             mLRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
